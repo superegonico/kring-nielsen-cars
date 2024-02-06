@@ -1,7 +1,6 @@
 export default class Car {
   constructor(root, car) {
     root.innerHTML = Car.getHTML();
-    console.log(car);
 
     this.el = {
       car: {
@@ -30,10 +29,13 @@ export default class Car {
 
   insertCarData() {
     this.el.makeModel.innerHTML = `${this.el.car.make} ${this.el.car.model}`;
-    // this.el.makeModel.innerHTML = `${this.el.car.make} ${this.el.car.model}`;
-    // this.el.makeModel.innerHTML = `${this.el.car.make} ${this.el.car.model}`;
-    // this.el.makeModel.innerHTML = `${this.el.car.make} ${this.el.car.model}`;
-    // this.el.makeModel.innerHTML = `${this.el.car.make} ${this.el.car.model}`;
+    this.el.variant.innerHTML = `${this.el.car.variant}`;
+    this.el.image.src = `${this.el.car.image}`;
+    this.el.registration.innerHTML = `${this.el.car.registration}`;
+    this.el.mileage.innerHTML = `${this.el.car.mileage}`;
+    this.el.propellant.innerHTML = `${this.el.car.propellant}`;
+    this.el.color.innerHTML = `${this.el.car.color}`;
+    this.el.price.innerHTML = Number(this.el.car.price);
   }
 
   static getHTML() {
@@ -43,8 +45,10 @@ export default class Car {
         <p class="car__variant text-[16px] leading-6 mt-2">2.0 AMG Line Stc. Aut.</p>
     </div>
     <div class="image mt-6">
-        <img class="car__image w-full" src=""
+      <figure class="w-full aspect-[16/9] overflow-hidden">
+        <img class="car__image w-full object-center" src=""
             alt="">
+      </figure>
     </div>
     <div class="details px-5 pt-6 pb-8 uppercase flex justify-between text-[10px]">
         <ul>
@@ -79,4 +83,65 @@ export default class Car {
         </div>
     </div>`;
   }
+}
+
+export class Cars {
+  constructor() {
+    this.el = {
+      cars: document.getElementById("cars"),
+    };
+  }
+
+  article(index) {
+    const newCarElement = document.createElement("article");
+    newCarElement.id = `car-${index}`;
+    newCarElement.classList.add("car", "pt-8", "pb-4", "shadow-lg", "bg-white");
+    document.getElementById("cars").appendChild(newCarElement);
+  }
+
+  filterBy(filters) {
+    this.getCarsFeed().then((cars) => {
+      const filtedList = cars.filter((car) => car.Make === filters.make);
+      console.log(filtedList);
+      filtedList.map((car, index) => {
+        this.article(index);
+      });
+      filtedList.map((car, index) => {
+        new Car(document.getElementById(`car-${index}`), car);
+      });
+    });
+  }
+
+  filterByMake(make) {
+    this.getCarsFeed().then((cars) => {
+      const filtedList = cars.filter((car) => car.Make === make);
+      console.log(filtedList);
+      filtedList.map((car, index) => {
+        this.article(index);
+      });
+      filtedList.map((car, index) => {
+        new Car(document.getElementById(`car-${index}`), car);
+      });
+    });
+  }
+
+  getCars() {
+    this.getCarsFeed().then((cars) => {
+      cars.map((car, index) => {
+        this.article(index);
+      });
+      cars.map((car, index) => {
+        new Car(document.getElementById(`car-${index}`), car);
+      });
+      return cars;
+    });
+  }
+
+  getCarsFeed = async () => {
+    const response = await fetch(
+      "https://gist.githubusercontent.com/nicolaisimonsen/23832234a19f65bb6ace54f51df1b33b/raw/779f7e78675b82e50734138b161cd3c954b0a0ce/cars.json"
+    );
+    const cars = await response.json();
+    return cars.vehicles;
+  };
 }

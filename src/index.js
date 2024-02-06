@@ -11,8 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
     cars.map((car, index) => {
       const newCarElement = document.createElement("article");
       newCarElement.id = `car-${index}`;
+      newCarElement.classList.add(
+        "car",
+        "pt-8",
+        "pb-4",
+        "shadow-lg",
+        "bg-white"
+      );
       document.getElementById("cars").appendChild(newCarElement);
-      new Car(document.getElementById(`car-${index}`));
+      new Car(document.getElementById(`car-${index}`), car);
     });
   });
 });

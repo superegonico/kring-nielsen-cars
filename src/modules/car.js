@@ -90,6 +90,8 @@ export class Cars {
     this.el = {
       cars: document.getElementById("cars"),
     };
+
+    this.el.cars.innerHTML = "";
   }
 
   article(index) {
@@ -101,7 +103,9 @@ export class Cars {
 
   filterBy(filters) {
     this.getCarsFeed().then((cars) => {
-      const filtedList = cars.filter((car) => car.Make === filters.make);
+      const filtedList = cars.filter(
+        (car) => car.Make.toLowerCase() === filters.make
+      );
       console.log(filtedList);
       filtedList.map((car, index) => {
         this.article(index);

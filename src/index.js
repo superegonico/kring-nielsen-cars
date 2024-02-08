@@ -15,7 +15,26 @@ document.addEventListener("DOMContentLoaded", () => {
 const getFiltering = () => {
   // cars.getModel = true;
   cars.getMake = true;
-  const filtersUI = new FiltersUI(document.getElementById("car-filters"));
+  cars.getModel = true;
+  cars.getType = true;
+  // cars.getPropellant = true;
+
+  const filtersMake = new FiltersUI(
+    document.querySelector("#car-filters .make"),
+    "make"
+  );
+  const filtersModel = new FiltersUI(
+    document.querySelector("#car-filters .model"),
+    "model"
+  );
+  const filtersType = new FiltersUI(
+    document.querySelector("#car-filters .type"),
+    "type"
+  );
+  // const filtersPropellant = new FiltersUI(
+  //   document.querySelector("#car-filters .propellant"),
+  //   "propellant"
+  // );
 };
 
 document.getElementById("car-filters").addEventListener("change", (e) => {

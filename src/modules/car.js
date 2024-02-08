@@ -114,12 +114,13 @@ export class Cars {
           }, {});
       });
 
-      new FiltersUI(document.getElementById("car-filters")).populateFilter(
-        [...new Set(this.carMake)],
+      new FiltersUI(
+        document.querySelector("#car-filters .make"),
         "make"
-      );
+      ).populateFilter([...new Set(this.carMake)], "make");
     });
   }
+
   get getModel() {
     return this.carModel;
   }
@@ -134,10 +135,33 @@ export class Cars {
           }, {});
       });
 
-      new FiltersUI(document.getElementById("car-filters")).populateFilter(
-        [...new Set(this.carModel)],
+      new FiltersUI(
+        document.querySelector("#car-filters .model"),
         "model"
-      );
+      ).populateFilter([...new Set(this.carModel)], "model");
+    });
+  }
+
+  get getType() {
+    return this.carType;
+  }
+
+  set getType(value) {
+    this.getCarsFeed().then((cars) => {
+      cars.map((car) => {
+        Object.keys(car)
+          .filter((key) => key === "BodyType")
+          .reduce((cur, key) => {
+            console.log(car[key]);
+
+            return this.carType.push(car[key]);
+          }, {});
+      });
+
+      new FiltersUI(
+        document.querySelector("#car-filters .type"),
+        "type"
+      ).populateFilter([...new Set(this.carType)], "type");
     });
   }
 

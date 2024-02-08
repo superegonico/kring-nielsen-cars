@@ -1,57 +1,37 @@
 import "./style.css";
 import Car, { Cars } from "./modules/car";
-import Filter from "./modules/filtering";
+import { Filter, FiltersUI } from "./modules/filtering";
 
-let carFilters = {};
 const filter = new Filter();
+const cars = new Cars();
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOMContent loaded");
-  // carFilters ? new Cars().getCars() : new Cars().getCars();
 
-  new Cars().getCars();
-  // new Cars().getCarList();
-  // new Cars().filterBy({
-  //   type: null,
-  //   propellant: null,
-  //   make: "VW",
-  //   model: null,
-  // });
-  // new Cars().filterByMake("Skoda");
+  cars.getCars();
+  getFiltering();
 });
+
+const getFiltering = () => {
+  // cars.getModel = true;
+  cars.getMake = true;
+  const filtersUI = new FiltersUI(document.getElementById("car-filters"));
+};
 
 document.getElementById("car-filters").addEventListener("change", (e) => {
-  if (e.target.id === "filters-make") {
-    filter.filterObj = { make: e.target.value };
-  }
-  if (e.target.id === "filters-model") {
-    filter.filterObj = { model: e.target.value };
-  }
-  if (e.target.id === "filters-type") {
-    filter.filterObj = { type: e.target.value };
-  }
-  if (e.target.id === "filters-propellant") {
-    filter.filterObj = { propellant: e.target.value };
+  switch (e.target.id) {
+    case "filters-make":
+      filter.filterObj = { make: e.target.value };
+      break;
+    case "filters-model":
+      filter.filterObj = { model: e.target.value };
+      break;
+    case "filters-type":
+      filter.filterObj = { type: e.target.value };
+      break;
+    case "filters-propellant":
+      filter.filterObj = { propellant: e.target.value };
+      break;
+    default:
   }
 });
-
-// const x = {
-//   aInternal: 10,
-//   aListener: function (val) {},
-//   set a(val) {
-//     this.aInternal = val;
-//     this.aListener(val);
-//   },
-//   get a() {
-//     return this.aInternal;
-//   },
-//   registerListener: function (listener) {
-//     this.aListener = listener;
-//   },
-// };
-
-// x.registerListener(function (val) {
-//   alert("Someone changed the value of x.a to " + val);
-// });
-
-// x.a = 43;

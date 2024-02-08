@@ -1,3 +1,5 @@
+import { FiltersUI } from "./filtering";
+
 export default class Car {
   constructor(root, car) {
     root.innerHTML = Car.getHTML();
@@ -90,8 +92,53 @@ export class Cars {
     this.el = {
       cars: document.getElementById("cars"),
     };
+    this.carMake = [];
+    this.carModel = [];
+    this.carType = [];
+    this.carPropellant = [];
 
     this.el.cars.innerHTML = "";
+  }
+
+  get getMake() {
+    return this.carMake;
+  }
+
+  set getMake(value) {
+    this.getCarsFeed().then((cars) => {
+      cars.map((car) => {
+        Object.keys(car)
+          .filter((key) => key.includes("Make"))
+          .reduce((cur, key) => {
+            return this.carMake.push(car[key]);
+          }, {});
+      });
+
+      new FiltersUI(document.getElementById("car-filters")).populateFilter(
+        [...new Set(this.carMake)],
+        "make"
+      );
+    });
+  }
+  get getModel() {
+    return this.carModel;
+  }
+
+  set getModel(value) {
+    this.getCarsFeed().then((cars) => {
+      cars.map((car) => {
+        Object.keys(car)
+          .filter((key) => key.includes("Model"))
+          .reduce((cur, key) => {
+            return this.carModel.push(car[key]);
+          }, {});
+      });
+
+      new FiltersUI(document.getElementById("car-filters")).populateFilter(
+        [...new Set(this.carModel)],
+        "model"
+      );
+    });
   }
 
   article(index) {

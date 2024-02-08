@@ -9,7 +9,6 @@ export class Filter {
   }
   set filterObj(value) {
     Object.assign(this.filter, value);
-    console.log(this.filter);
     new Cars().filterBy(this.filter);
   }
 }
@@ -24,13 +23,14 @@ export class FiltersUI {
   }
 
   populateFilter(arr, filter) {
-    const options = arr.map((filter) => {
-      let value = null;
-      if (Array.isArray(filter)) {
-        value = filter[0].toLowerCase();
-      } else {
-        value = filter.toLowerCase();
-      }
+    const options = arr.sort().map((filter) => {
+      // let value = null;
+      // if (Array.isArray(filter)) {
+      //   value = filter[0].toLowerCase();
+      // } else {
+      //   value = filter.toLowerCase();
+      // }
+      const value = filter;
       return `<option value="${value}">${filter}</option>`;
     });
     this.el.filter.innerHTML = options;

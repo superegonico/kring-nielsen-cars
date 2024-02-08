@@ -17,7 +17,7 @@ const getFiltering = () => {
   cars.getMake = true;
   cars.getModel = true;
   cars.getType = true;
-  // cars.getPropellant = true;
+  cars.getPropellant = true;
 
   const filtersMake = new FiltersUI(
     document.querySelector("#car-filters .make"),
@@ -30,6 +30,10 @@ const getFiltering = () => {
   const filtersType = new FiltersUI(
     document.querySelector("#car-filters .type"),
     "type"
+  );
+  const filtersPropellant = new FiltersUI(
+    document.querySelector("#car-filters .propellant"),
+    "propellant"
   );
   // const filtersPropellant = new FiltersUI(
   //   document.querySelector("#car-filters .propellant"),

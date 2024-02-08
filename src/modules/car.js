@@ -152,8 +152,6 @@ export class Cars {
         Object.keys(car)
           .filter((key) => key === "BodyType")
           .reduce((cur, key) => {
-            console.log(car[key]);
-
             return this.carType.push(car[key]);
           }, {});
       });
@@ -165,6 +163,35 @@ export class Cars {
     });
   }
 
+  get getPropellant() {
+    return this.carPropellant;
+  }
+
+  set getPropellant(value) {
+    this.getCarsFeed().then((cars) => {
+      cars.map((car) => {
+        Object.keys(car)
+          .filter((key) => key === "Propellant")
+          .reduce((cur, key) => {
+            return this.carPropellant.push(car[key]);
+          }, {});
+      });
+
+      new FiltersUI(
+        document.querySelector("#car-filters .propellant"),
+        "propellant"
+      ).populateFilter([...new Set(this.carPropellant)], "propellant");
+    });
+  }
+
+  lowerFirstChar = (obj) =>
+    Object.keys(obj).reduce((acc, k) => {
+      acc[k.substring(0, 1).toLowerCase() + k.substring(1)] = obj[k];
+      return acc;
+    }, {});
+
+  lowerize = (obj) => {};
+
   article(index) {
     const newCarElement = document.createElement("article");
     newCarElement.id = `car-${index}`;
@@ -174,10 +201,12 @@ export class Cars {
 
   filterBy(filters) {
     this.getCarsFeed().then((cars) => {
-      const filtedList = cars.filter(
-        (car) => car.Make.toLowerCase() === filters.make
-      );
-      console.log(filtedList);
+      const filtedList = cars.filter((car) => {
+        car = this.lowerFirstChar(car);
+        return Object.entries(car).some(([key, val]) => filters[key] === val);
+      });
+      console.log(filters);
+
       filtedList.map((car, index) => {
         this.article(index);
       });

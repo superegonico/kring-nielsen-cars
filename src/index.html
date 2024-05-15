@@ -9,12 +9,27 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
     <title>Kring & Nielsen</title>
   </head>
-  <body class="bg-slate-200 font-ibm">
-    <main class="max-w-[1300px] mx-auto py-40">
-      <section id="cars" class="grid grid-cols-3 gap-12"></section>
+  <body class="px-32 bg-slate-100 font-ibm">
+    
+    <main class="px-4 py-20 mx-auto my-32 bg-white">
+      <section class="py-8 mb-8 space-x-8 border-2">
+        <div class="relative search-wrapper">
+            <h2 class="flex mb-2 font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="ml-2">Søg efter køretøj</span></h2>
+            <input type="text" class="block py-2 px-4 rounded-md border-[1px]  after:content-[''] after:h-4 after:w-4 after:block after:absolute after:top-0 after:left-0 after:bg-red-400" name="" id="" placeholder="Søg efter køretøj">
+        </div>
+      </section>
+      <section id="car-filters">
+        <div class="model"></div>
+        <div class="make"></div>
+        <div class="propellant"></div>
+        <div class="type"></div>
+      </section>
+      <section id="cars" class="grid grid-cols-4 gap-4"></section>
     </main>
 
     <script src="bundle.js"></script>
   </body>
 </html>
-<article class="car pt-8 pb-4 shadow-lg bg-white"></article>
+<article class="pt-8 pb-4 bg-white shadow-lg car"></article>

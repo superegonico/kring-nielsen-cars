@@ -1,4 +1,6 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -7,6 +9,13 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Custom template",
+      // Load a custom template (lodash by default)
+      template: "./src/index.html",
+    }),
+  ],
   devServer: {
     static: {
       directory: path.resolve(__dirname, "dist"),

@@ -42,47 +42,50 @@ export default class Car {
 
   static getHTML() {
     return `
-    <div class="heading text-center">
-        <h3 class="car__make-model text-[28px] leading-6 font-semibold">Mercedes C250</h3>
-        <p class="car__variant text-[16px] leading-6 mt-2">2.0 AMG Line Stc. Aut.</p>
-    </div>
-    <div class="image mt-6">
-      <figure class="w-full aspect-[16/9] overflow-hidden">
-        <img class="car__image w-full object-center" src=""
+
+    <div class="image">
+      <figure class="w-full aspect-[16/10] overflow-hidden">
+        <img class="car__image w-full h-full object-cover" src=""
             alt="">
       </figure>
     </div>
-    <div class="details px-5 pt-6 pb-8 uppercase flex justify-between text-[10px]">
-        <ul>
-            <li class="font-bold">1. reg</li>
+    <div class="p-4">
+    <div class="heading">
+      <h3 class="car__make-model text-[16px] leading-snug font-semibold">Mercedes C250</h3>
+      <p class="car__variant text-[12px] leading-snug opacity-70">2.0 AMG Line Stc. Aut.</p>
+    </div>
+    <div class="details grid grid-cols-2 gap-1 py-6 text-[14px]">    
+
+      <ul class="border-[1px] rounded-md p-2">
+            <li class="opacity-60 text-[12px]">1. reg</li>
             <li class="car__reg">06.20.2016</li>
         </ul>
-        <ul>
-            <li class="font-bold">KM</li>
+        <ul class="border-[1px] rounded-md p-2">
+            <li class="opacity-60 text-[12px]">KM</li>
             <li class="car__milage">90.0000</li>
         </ul>
-        <ul>
-            <li class="font-bold">Brændstof</li>
+       <ul class="border-[1px] rounded-md p-2">
+            <li class="opacity-60 text-[12px]">Brændstof</li>
             <li class="car__propellant">BENZIN</li>
         </ul>
-        <ul>
-            <li class="font-bold">Farve</li>
+       <ul class="border-[1px] rounded-md p-2">
+            <li class="opacity-60 text-[12px]">Farve</li>
             <li class="car__color">SORTMETAL</li>
         </ul>
     </div>
-    <hr>
-    <div class="pricing flex justify-between items-center pt-4 px-5">
+    <div class="pricing flex justify-between items-center">
         <div class="price">
-            <span
-                class="car__price text-[28px] font-semibold after:content-['DKK'] after:text-[14px] after:ml-3">399.995</span>
+          <div class="inline-block -translate-y-4 mr-2">DKK</div>  
+          <span class="car__price text-[28px] font-semibold after:content-[',-']">399.995</span>
         </div>
-        <div class="button">
+        <div class="button h-[44px] w-[44px] bg-yellow-400 flex justify-center items-center rounded-md cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
-                <circle cx="23" cy="23" r="23" fill="#E7B84C" />
+  
                 <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M26 26.6603L30 23.3301L26 20V23H15V24H26V26.6603Z" fill="#113522" />
             </svg>
         </div>
+    </div>
     </div>`;
   }
 }
@@ -195,7 +198,13 @@ export class Cars {
   article(index) {
     const newCarElement = document.createElement("article");
     newCarElement.id = `car-${index}`;
-    newCarElement.classList.add("car", "pt-8", "pb-4", "shadow-lg", "bg-white");
+    newCarElement.classList.add(
+      "car",
+      "pb-4",
+      "border-[1px]",
+      "rounded-lg",
+      "overflow-hidden"
+    );
     document.getElementById("cars").appendChild(newCarElement);
   }
 

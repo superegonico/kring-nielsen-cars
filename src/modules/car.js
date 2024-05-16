@@ -1,4 +1,5 @@
 import { FiltersUI } from "./filtering";
+import { filterData, SearchType } from "filter-data";
 
 export default class Car {
   constructor(root, car) {
@@ -51,7 +52,7 @@ export default class Car {
     </div>
     <div class="p-4">
     <div class="heading">
-      <h3 class="car__make-model text-[16px] leading-snug font-semibold">Mercedes C250</h3>
+      <h3 class="car__make-model text-[20px] leading-snug font-semibold">Mercedes C250</h3>
       <p class="car__variant text-[12px] leading-snug opacity-70">2.0 AMG Line Stc. Aut.</p>
     </div>
     <div class="details grid grid-cols-2 gap-1 py-6 text-[14px]">    
@@ -76,7 +77,7 @@ export default class Car {
     <div class="pricing flex justify-between items-center">
         <div class="price">
           <div class="inline-block -translate-y-4 mr-2">DKK</div>  
-          <span class="car__price text-[28px] font-semibold after:content-[',-']">399.995</span>
+          <span class="car__price text-[22px] font-semibold after:content-[',-']">399.995</span>
         </div>
         <div class="button h-[44px] w-[44px] bg-yellow-400 flex justify-center items-center rounded-md cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
@@ -210,18 +211,16 @@ export class Cars {
 
   filterBy(filters) {
     this.getCarsFeed().then((cars) => {
-      const filtedList = cars.filter((car) => {
-        car = this.lowerFirstChar(car);
-        return Object.entries(car).some(([key, val]) => filters[key] === val);
-      });
-      console.log(filters);
+      const result = filterData(cars, filters);
 
-      filtedList.map((car, index) => {
+      result.map((car, index) => {
         this.article(index);
       });
-      filtedList.map((car, index) => {
+      result.map((car, index) => {
         new Car(document.getElementById(`car-${index}`), car);
       });
+
+      return result;
     });
   }
 

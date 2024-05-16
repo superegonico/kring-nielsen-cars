@@ -23,6 +23,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "filter-data": "^0.6.0",
     "html-webpack-plugin": "^5.6.0"
   }
 }

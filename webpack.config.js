@@ -10,11 +10,11 @@ module.exports = {
     filename: "bundle.js",
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: "Custom template",
-      // Load a custom template (lodash by default)
-      template: "./src/index.html",
-    }),
+    // new HtmlWebpackPlugin({
+    //   title: "Custom template",
+    //   // Load a custom template (lodash by default)
+    //   template: "./src/index.html",
+    // }),
   ],
   devServer: {
     static: {

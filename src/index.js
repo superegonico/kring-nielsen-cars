@@ -41,6 +41,11 @@ const getFiltering = () => {
   // );
 };
 
+document.getElementById("free-search").addEventListener("keypress", (e) => {
+  console.log(e.target.value);
+  filter.filterSearch = e.target.value;
+});
+
 document.getElementById("car-filters").addEventListener("change", (e) => {
   switch (e.target.id) {
     case "filters-make":

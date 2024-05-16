@@ -1,4 +1,5 @@
 import { Cars } from "./car";
+import { filterData, SearchType } from "filter-data";
 
 export class Filter {
   constructor() {
@@ -9,6 +10,16 @@ export class Filter {
   }
   set filterObj(value) {
     Object.assign(this.filter, value);
+    new Cars().filterBy(this.filter);
+  }
+  get filterSearch() {
+    return this.filter;
+  }
+  set filterSearch(value) {
+    this.filter = [
+      { key: ["Make", "Model", "Variant"], value: value, type: SearchType.LK },
+    ];
+
     new Cars().filterBy(this.filter);
   }
 }

@@ -105,12 +105,15 @@ export class Cars {
   }
 
   get getMake() {
+    console.log(this.carMake);
     return this.carMake;
   }
 
   set getMake(value) {
-    this.getCarsFeed().then((cars) => {
-      cars.map((car) => {
+    if (localStorage.getItem("filtered-car-list")) {
+      const carsFeed = JSON.parse(localStorage.getItem("filtered-car-list"));
+      carsFeed.map((car) => {
+        console.log(car);
         Object.keys(car)
           .filter((key) => key.includes("Make"))
           .reduce((cur, key) => {
@@ -122,7 +125,22 @@ export class Cars {
         document.querySelector("#car-filters .make"),
         "make"
       ).populateFilter([...new Set(this.carMake)], "make");
-    });
+    } else {
+      this.getCarsFeed().then((cars) => {
+        cars.map((car) => {
+          Object.keys(car)
+            .filter((key) => key.includes("Make"))
+            .reduce((cur, key) => {
+              return this.carMake.push(car[key]);
+            }, {});
+        });
+
+        new FiltersUI(
+          document.querySelector("#car-filters .make"),
+          "make"
+        ).populateFilter([...new Set(this.carMake)], "make");
+      });
+    }
   }
 
   get getModel() {
@@ -130,8 +148,10 @@ export class Cars {
   }
 
   set getModel(value) {
-    this.getCarsFeed().then((cars) => {
-      cars.map((car) => {
+    if (localStorage.getItem("filtered-car-list")) {
+      const carsFeed = JSON.parse(localStorage.getItem("filtered-car-list"));
+      carsFeed.map((car) => {
+        console.log(car);
         Object.keys(car)
           .filter((key) => key.includes("Model"))
           .reduce((cur, key) => {
@@ -139,11 +159,30 @@ export class Cars {
           }, {});
       });
 
+      console.log("populate fra localstorage");
+
       new FiltersUI(
         document.querySelector("#car-filters .model"),
         "model"
       ).populateFilter([...new Set(this.carModel)], "model");
-    });
+    } else {
+      this.getCarsFeed().then((cars) => {
+        cars.map((car) => {
+          Object.keys(car)
+            .filter((key) => key.includes("Model"))
+            .reduce((cur, key) => {
+              return this.carModel.push(car[key]);
+            }, {});
+        });
+
+        console.log("populate fra feed");
+
+        new FiltersUI(
+          document.querySelector("#car-filters .model"),
+          "model"
+        ).populateFilter([...new Set(this.carModel)], "model");
+      });
+    }
   }
 
   get getType() {
@@ -210,9 +249,9 @@ export class Cars {
   }
 
   filterBy(filters) {
-    this.getCarsFeed().then((cars) => {
-      const result = filterData(cars, filters);
-
+    if (localStorage.getItem("filtered-car-list")) {
+      const carsFeed = JSON.parse(localStorage.getItem("filtered-car-list"));
+      const result = filterData(carsFeed, filters);
       result.map((car, index) => {
         this.article(index);
       });
@@ -220,14 +259,29 @@ export class Cars {
         new Car(document.getElementById(`car-${index}`), car);
       });
 
-      return result;
-    });
+      localStorage.setItem("filtered-car-list", JSON.stringify(result));
+    } else {
+      this.getCarsFeed().then((cars) => {
+        const result = filterData(cars, filters);
+
+        result.map((car, index) => {
+          this.article(index);
+        });
+        result.map((car, index) => {
+          new Car(document.getElementById(`car-${index}`), car);
+        });
+
+        localStorage.setItem("filtered-car-list", JSON.stringify(result));
+
+        return result;
+      });
+    }
   }
 
   filterByMake(make) {
     this.getCarsFeed().then((cars) => {
       const filtedList = cars.filter((car) => car.Make === make);
-      console.log(filtedList);
+
       filtedList.map((car, index) => {
         this.article(index);
       });
@@ -238,7 +292,8 @@ export class Cars {
   }
 
   getCars() {
-    this.getCarsFeed().then((cars) => {
+    if (localStorage.getItem("filtered-car-list")) {
+      const cars = JSON.parse(localStorage.getItem("filtered-car-list"));
       cars.map((car, index) => {
         this.article(index);
       });
@@ -246,7 +301,17 @@ export class Cars {
         new Car(document.getElementById(`car-${index}`), car);
       });
       return cars;
-    });
+    } else {
+      this.getCarsFeed().then((cars) => {
+        cars.map((car, index) => {
+          this.article(index);
+        });
+        cars.map((car, index) => {
+          new Car(document.getElementById(`car-${index}`), car);
+        });
+        return cars;
+      });
+    }
   }
 
   getCarsFeed = async () => {

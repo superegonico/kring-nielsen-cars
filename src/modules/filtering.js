@@ -3,13 +3,18 @@ import { filterData, SearchType } from "filter-data";
 
 export class Filter {
   constructor() {
-    this.filter = {};
+    this.filter = [];
   }
   get filterObj() {
     return this.filter;
   }
   set filterObj(value) {
-    Object.assign(this.filter, value);
+    console.log(value);
+    this.filter.push(value);
+    // Object.assign(this.filter, value);
+
+    // this.filter = [{ key: ["Make"], value: value, type: SearchType.LK }];
+
     new Cars().filterBy(this.filter);
   }
   get filterSearch() {
@@ -21,6 +26,7 @@ export class Filter {
     ];
 
     new Cars().filterBy(this.filter);
+    localStorage.setItem("filtered-car-list", new Cars().filterBy(this.filter));
   }
 }
 
@@ -29,7 +35,7 @@ export class FiltersUI {
     root.innerHTML = FiltersUI.getHTML(theFilter);
 
     this.el = {
-      filter: document.getElementById(`filters-${theFilter}`),
+      filter: document.getElementById(`${theFilter}`),
     };
   }
 
@@ -49,7 +55,7 @@ export class FiltersUI {
 
   static getHTML(theFilter) {
     return `
-    <select name="cars-${theFilter}" id="filters-${theFilter}">
+    <select name="${theFilter}" id="${theFilter}">
       <option value="">Vælg</option>
     </select>`;
   }

@@ -1,6 +1,7 @@
 import "./style.css";
 import Car, { Cars } from "./modules/car";
 import { Filter, FiltersUI } from "./modules/filtering";
+import { filterData, SearchType } from "filter-data";
 
 const filter = new Filter();
 const cars = new Cars();
@@ -10,6 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cars.getCars();
   getFiltering();
+
+  // console.log(
+  //   "filtered-car-list",
+  //   JSON.parse(localStorage.getItem("filtered-car-list"))
+  // );
 });
 
 const getFiltering = () => {
@@ -27,14 +33,6 @@ const getFiltering = () => {
     document.querySelector("#car-filters .model"),
     "model"
   );
-  const filtersType = new FiltersUI(
-    document.querySelector("#car-filters .type"),
-    "type"
-  );
-  const filtersPropellant = new FiltersUI(
-    document.querySelector("#car-filters .propellant"),
-    "propellant"
-  );
   // const filtersPropellant = new FiltersUI(
   //   document.querySelector("#car-filters .propellant"),
   //   "propellant"
@@ -42,24 +40,29 @@ const getFiltering = () => {
 };
 
 document.getElementById("free-search").addEventListener("keypress", (e) => {
-  console.log(e.target.value);
+  // console.log(e.target.value);
   filter.filterSearch = e.target.value;
 });
 
+document.getElementById("reset-filters").addEventListener("click", (e) => {
+  localStorage.removeItem("filtered-car-list");
+
+  cars.getCars();
+
+  getFiltering();
+});
+
 document.getElementById("car-filters").addEventListener("change", (e) => {
-  switch (e.target.id) {
-    case "filters-make":
-      filter.filterObj = { make: e.target.value };
-      break;
-    case "filters-model":
-      filter.filterObj = { model: e.target.value };
-      break;
-    case "filters-type":
-      filter.filterObj = { type: e.target.value };
-      break;
-    case "filters-propellant":
-      filter.filterObj = { propellant: e.target.value };
-      break;
-    default:
-  }
+  filter.filterObj = {
+    key: e.target.id.charAt(0).toUpperCase() + e.target.id.slice(1),
+    value: e.target.value,
+    type: SearchType.LK,
+  };
+
+  getFiltering();
+
+  // console.log(
+  //   "filtered-car-list",
+  //   JSON.parse(localStorage.getItem("filtered-car-list"))
+  // );
 });

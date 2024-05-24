@@ -1,12 +1,21 @@
 import { FiltersUI } from "./filtering";
 import { filterData, SearchType } from "filter-data";
 
+let carList = [];
+let carFilters = {
+  make: [],
+  model: [],
+  type: [],
+  propellant: [],
+};
+
 export default class Car {
   constructor(root, car) {
     root.innerHTML = Car.getHTML();
 
     this.el = {
       car: {
+        id: car.Id,
         make: car.Make,
         model: car.Model,
         variant: car.Variant,
@@ -17,6 +26,7 @@ export default class Car {
         color: car.Color,
         price: car.Price,
       },
+
       makeModel: root.querySelector(".car__make-model"),
       variant: root.querySelector(".car__variant"),
       image: root.querySelector(".car__image"),
@@ -25,6 +35,7 @@ export default class Car {
       propellant: root.querySelector(".car__propellant"),
       color: root.querySelector(".car__color"),
       price: root.querySelector(".car__price"),
+      carDetails: root.querySelector(".show-car-details"),
     };
 
     this.insertCarData();
@@ -39,6 +50,7 @@ export default class Car {
     this.el.propellant.innerHTML = `${this.el.car.propellant}`;
     this.el.color.innerHTML = `${this.el.car.color}`;
     this.el.price.innerHTML = Number(this.el.car.price);
+    this.el.carDetails.setAttribute("id", this.el.car.id);
   }
 
   static getHTML() {
@@ -79,7 +91,7 @@ export default class Car {
           <div class="inline-block -translate-y-4 mr-2">DKK</div>  
           <span class="car__price text-[22px] font-semibold after:content-[',-']">399.995</span>
         </div>
-        <div class="button h-[44px] w-[44px] bg-yellow-400 flex justify-center items-center rounded-md cursor-pointer">
+        <div id="" class="button show-car-details h-[44px] w-[44px] bg-yellow-400 flex justify-center items-center rounded-md cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
   
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -88,6 +100,40 @@ export default class Car {
         </div>
     </div>
     </div>`;
+  }
+}
+
+export class CarDetails {
+  constructor(root, car) {
+    root.innerHTML = CarDetails.getHTML();
+
+    this.el = {
+      car: {
+        id: car.Id,
+        make: car.Make,
+        model: car.Model,
+        variant: car.Variant,
+        image: car.Pictures[0],
+        registration: car.RegistrationDate,
+        mileage: car.Mileage,
+        propellant: car.Propellant,
+        color: car.Color,
+        price: car.Price,
+      },
+    };
+
+    this.insertCarData();
+  }
+
+  insertCarData() {
+    // console.log(this.root);
+    // console.log(this.el.car.make);
+  }
+
+  static getHTML() {
+    return `
+
+    `;
   }
 }
 
@@ -105,21 +151,22 @@ export class Cars {
   }
 
   get getMake() {
-    console.log(this.carMake);
     return this.carMake;
   }
 
   set getMake(value) {
-    if (localStorage.getItem("filtered-car-list")) {
-      const carsFeed = JSON.parse(localStorage.getItem("filtered-car-list"));
-      carsFeed.map((car) => {
-        console.log(car);
+    let tempList = [];
+
+    if (carList.length > 0) {
+      carList.map((car) => {
         Object.keys(car)
           .filter((key) => key.includes("Make"))
           .reduce((cur, key) => {
-            return this.carMake.push(car[key]);
+            return tempList.push(car[key]);
           }, {});
       });
+
+      this.carMake = tempList;
 
       new FiltersUI(
         document.querySelector("#car-filters .make"),
@@ -148,18 +195,18 @@ export class Cars {
   }
 
   set getModel(value) {
-    if (localStorage.getItem("filtered-car-list")) {
-      const carsFeed = JSON.parse(localStorage.getItem("filtered-car-list"));
-      carsFeed.map((car) => {
-        console.log(car);
+    let tempList = [];
+
+    if (carList.length > 0) {
+      carList.map((car) => {
         Object.keys(car)
           .filter((key) => key.includes("Model"))
           .reduce((cur, key) => {
-            return this.carModel.push(car[key]);
+            return tempList.push(car[key]);
           }, {});
       });
 
-      console.log("populate fra localstorage");
+      this.carModel = tempList;
 
       new FiltersUI(
         document.querySelector("#car-filters .model"),
@@ -175,8 +222,6 @@ export class Cars {
             }, {});
         });
 
-        console.log("populate fra feed");
-
         new FiltersUI(
           document.querySelector("#car-filters .model"),
           "model"
@@ -190,20 +235,39 @@ export class Cars {
   }
 
   set getType(value) {
-    this.getCarsFeed().then((cars) => {
-      cars.map((car) => {
+    let tempList = [];
+
+    if (carList.length > 0) {
+      carList.map((car) => {
         Object.keys(car)
-          .filter((key) => key === "BodyType")
+          .filter((key) => key === "Type")
           .reduce((cur, key) => {
-            return this.carType.push(car[key]);
+            return tempList.push(car[key]);
           }, {});
       });
+
+      this.carType = tempList;
 
       new FiltersUI(
         document.querySelector("#car-filters .type"),
         "type"
       ).populateFilter([...new Set(this.carType)], "type");
-    });
+    } else {
+      this.getCarsFeed().then((cars) => {
+        cars.map((car) => {
+          Object.keys(car)
+            .filter((key) => key === "Type")
+            .reduce((cur, key) => {
+              return this.carType.push(car[key]);
+            }, {});
+        });
+
+        new FiltersUI(
+          document.querySelector("#car-filters .type"),
+          "type"
+        ).populateFilter([...new Set(this.carType)], "type");
+      });
+    }
   }
 
   get getPropellant() {
@@ -211,20 +275,39 @@ export class Cars {
   }
 
   set getPropellant(value) {
-    this.getCarsFeed().then((cars) => {
-      cars.map((car) => {
+    let tempList = [];
+
+    if (carList.length > 0) {
+      carList.map((car) => {
         Object.keys(car)
           .filter((key) => key === "Propellant")
           .reduce((cur, key) => {
-            return this.carPropellant.push(car[key]);
+            return tempList.push(car[key]);
           }, {});
       });
+
+      this.carPropellant = tempList;
 
       new FiltersUI(
         document.querySelector("#car-filters .propellant"),
         "propellant"
       ).populateFilter([...new Set(this.carPropellant)], "propellant");
-    });
+    } else {
+      this.getCarsFeed().then((cars) => {
+        cars.map((car) => {
+          Object.keys(car)
+            .filter((key) => key === "Propellant")
+            .reduce((cur, key) => {
+              return this.carPropellant.push(car[key]);
+            }, {});
+        });
+
+        new FiltersUI(
+          document.querySelector("#car-filters .propellant"),
+          "propellant"
+        ).populateFilter([...new Set(this.carPropellant)], "propellant");
+      });
+    }
   }
 
   lowerFirstChar = (obj) =>
@@ -248,34 +331,75 @@ export class Cars {
     document.getElementById("cars").appendChild(newCarElement);
   }
 
-  filterBy(filters) {
-    if (localStorage.getItem("filtered-car-list")) {
-      const carsFeed = JSON.parse(localStorage.getItem("filtered-car-list"));
-      const result = filterData(carsFeed, filters);
-      result.map((car, index) => {
-        this.article(index);
-      });
-      result.map((car, index) => {
-        new Car(document.getElementById(`car-${index}`), car);
-      });
-
-      localStorage.setItem("filtered-car-list", JSON.stringify(result));
-    } else {
-      this.getCarsFeed().then((cars) => {
-        const result = filterData(cars, filters);
-
-        result.map((car, index) => {
-          this.article(index);
-        });
-        result.map((car, index) => {
-          new Car(document.getElementById(`car-${index}`), car);
-        });
-
-        localStorage.setItem("filtered-car-list", JSON.stringify(result));
-
-        return result;
-      });
+  selectedFilters(tis, lort) {
+    switch (tis) {
+      case "make":
+        carFilters.make = lort;
+        break;
+      case "model":
+        carFilters.model = lort;
+        break;
+      case "type":
+        carFilters.type = lort;
+        break;
+      case "propellant":
+        carFilters.propellant = lort;
+        break;
+      default:
+        break;
     }
+
+    if (carFilters.make) {
+      const options = Array.from(
+        document.querySelector("#car-filters #make").children
+      );
+      const selected = options
+        .filter((option) => option.value === carFilters.make)
+        .map((option) => (option.selected = true));
+    }
+    if (carFilters.model) {
+      const options = Array.from(
+        document.querySelector("#car-filters #model").children
+      );
+      const selected = options
+        .filter((option) => option.value === carFilters.model)
+        .map((option) => (option.selected = true));
+    }
+    if (carFilters.type) {
+      const options = Array.from(
+        document.querySelector("#car-filters #type").children
+      );
+      const selected = options
+        .filter((option) => option.value === carFilters.type)
+        .map((option) => (option.selected = true));
+    }
+    if (carFilters.propellant) {
+      const options = Array.from(
+        document.querySelector("#car-filters #propellant").children
+      );
+      const selected = options
+        .filter((option) => option.value === carFilters.propellant)
+        .map((option) => (option.selected = true));
+    }
+
+    return;
+  }
+
+  filterBy(filters) {
+    const result = filterData(carList, filters);
+
+    result.map((car, index) => {
+      this.article(index);
+    });
+    result.map((car, index) => {
+      new Car(document.getElementById(`car-${index}`), car);
+    });
+
+    carList = result;
+
+    // localStorage.setItem("filtered-car-list", JSON.stringify(result));
+
+    return result;
   }
 
   filterByMake(make) {
@@ -291,27 +415,35 @@ export class Cars {
     });
   }
 
+  resetFilters() {
+    carList = [];
+    this.carMake = [];
+    this.carModel = [];
+    this.carType = [];
+    this.carPropellant = [];
+  }
+
+  getSpecificCar(id) {
+    this.getCarsFeed().then((cars) => {
+      const car = cars.filter((car) => car.Id === id);
+
+      new CarDetails(document.querySelector(".fucking-car"), car[0]);
+
+      return car;
+    });
+  }
+
   getCars() {
-    if (localStorage.getItem("filtered-car-list")) {
-      const cars = JSON.parse(localStorage.getItem("filtered-car-list"));
+    this.getCarsFeed().then((cars) => {
       cars.map((car, index) => {
         this.article(index);
       });
       cars.map((car, index) => {
         new Car(document.getElementById(`car-${index}`), car);
       });
+      carList = cars;
       return cars;
-    } else {
-      this.getCarsFeed().then((cars) => {
-        cars.map((car, index) => {
-          this.article(index);
-        });
-        cars.map((car, index) => {
-          new Car(document.getElementById(`car-${index}`), car);
-        });
-        return cars;
-      });
-    }
+    });
   }
 
   getCarsFeed = async () => {

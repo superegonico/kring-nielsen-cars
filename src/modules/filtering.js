@@ -9,8 +9,9 @@ export class Filter {
     return this.filter;
   }
   set filterObj(value) {
-    console.log(value);
+    // console.log(value);
     this.filter.push(value);
+
     // Object.assign(this.filter, value);
 
     // this.filter = [{ key: ["Make"], value: value, type: SearchType.LK }];
@@ -26,7 +27,6 @@ export class Filter {
     ];
 
     new Cars().filterBy(this.filter);
-    localStorage.setItem("filtered-car-list", new Cars().filterBy(this.filter));
   }
 }
 
@@ -51,6 +51,11 @@ export class FiltersUI {
       return `<option value="${value}">${filter}</option>`;
     });
     this.el.filter.innerHTML = options;
+    const newOption = document.createElement("option");
+    newOption.value = "";
+    newOption.text = "Vælg";
+    newOption.selected = true;
+    this.el.filter.prepend(newOption);
   }
 
   static getHTML(theFilter) {

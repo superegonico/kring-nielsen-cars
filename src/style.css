@@ -18,3 +18,62 @@
 .select-filters select {
    
 }
+
+.custom-specgrid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.spec-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-self: flex-start;
+    border-radius: 0.375rem;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(243 244 246 / var(--tw-border-opacity));
+    padding: 16px;
+    font-size: 16px;
+}
+
+.spec-block :first-child {
+    font-size: 14px;
+    line-height: 1;
+    --tw-text-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-text-opacity));
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.spec-block :last-child {
+    line-height: 1;
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.carCard_price {
+    display: flex;
+    flex-wrap: wrap;
+    /* font-size: 24px; */
+    font-weight: 700;
+    line-height: 1;
+    color: var(--bbm-primary-color);
+}
+
+.carCard_vat {
+    font-size: 12px;
+}
+
+#car-filters.show {
+    display: flex;
+}
+#car-filters.hide {
+    display: none;
+}

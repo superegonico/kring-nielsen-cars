@@ -43,11 +43,10 @@ document.getElementById("hide-filters").addEventListener("click", (e) => {
   document.getElementById("car-filters").classList.toggle("hide");
 });
 document.getElementById("cars").addEventListener("click", (e) => {
-  document.getElementById("car-filters").classList.toggle("hide");
+  document.getElementById("car-filters").classList.add("hide");
 });
 
 document.getElementById("reset-filters").addEventListener("click", (e) => {
-  localStorage.removeItem("filtered-car-list");
   cars.resetFilters();
   cars.getCars();
   getFiltering();

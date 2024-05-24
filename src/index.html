@@ -9,24 +9,1130 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
     <title>Kring & Nielsen</title>
   </head>
-  <body class="px-32 bg-slate-100 font-ibm">
+  <body class="px-20 bg-slate-100 font-ibm">
     
-    <main class="px-4 py-20 mx-auto my-32 bg-white">
-      <section class="py-8 mb-8 space-x-8 border-2">
-        <div class="relative search-wrapper">
+    <main class="px-4 py-12 mx-auto my-12 bg-white">
+      <section id="filtering" class="relative mb-8">
+        
+        <!-- SEARCH -->
+        
+        <div class="relative search-wrapper py-4 border-b-[1px]">
             <h2 class="flex mb-2 font-bold">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <span class="ml-2">Søg efter køretøj</span></h2>
-            <input type="text" class="block py-2 px-4 rounded-md border-[1px]  after:content-[''] after:h-4 after:w-4 after:block after:absolute after:top-0 after:left-0 after:bg-red-400" name="" id="" placeholder="Søg efter køretøj">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="ml-2">Søg efter køretøj</span>
+            </h2>
+            <div class="relative ">
+              <input type="text" class="block py-2 px-4 rounded-md border-[1px] w-80 h-[40px]" name="" id="free-search" placeholder="Søg efter køretøj">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute -translate-x-2 pointer-events-none opacity-30 top-2 left-72 feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
         </div>
+
+        <!-- FILTER/SORT/DISPLAY -->
+
+        <div class="flex justify-between py-4 filters-wrapper">
+          <div class="relative flex items-center justify-start space-x-4">
+            <button id="show-filters" class="px-4 py-2 border-[1px] text-left rounded-md w-24 h-[40px] hover:bg-yellow-400">Filtrer</button>
+            <svg xmlns="http://www.w3.org/2000/svg" class="absolute w-6 h-6 pointer-events-none top-2 left-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+            </svg>
+            <span>Viser 107 biler</span>
+         </div>
+         <div class="flex space-x-2">
+          <select name="" id="" class="py-2 px-4 rounded-md border-[1px] h-[40px]">
+            <option value="">Alle</option>
+            <option value="">Pris lav-høj</option>
+            <option value="">Pris høj-lav</option>
+          </select>
+          <button class="py-2 px-2 rounded-md border-[1px] h-[40px] hover:bg-yellow-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+          </svg></button>
+          <button class="py-2 px-2 rounded-md border-[1px] h-[40px] hover:bg-yellow-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+          </svg></button>
+         </div>
+        </div>
+
+        <!-- FILTERS BOX -->
+
+        <div id="car-filters" class="hide absolute z-20 flex flex-col mt-1 bg-white border rounded-lg shadow-2xl max-h-[60vh] w-80">
+          <div class="flex items-center justify-between px-4 py-4 border-b">
+              <div class="flex space-x-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                  </svg><span class="text-base font-bold text-gray-900">Filtrer</span>
+              </div>
+              <div id="reset-filters" class="flex items-center space-x-2 cursor-pointer text-[12px] px-4 py-2 bg-[#e5e5e5] rounded-full hover:bg-yellow-400">
+                  <span>Nulstil alt</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                      </svg>
+                  
+              </div>
+          </div>
+          <div  class="px-4 py-4 space-y-2 overflow-y-auto select-filters">
+              <div>
+                  <label class="block font-medium text-gray-700">
+                      Kategori
+                  </label>
+                  <div class="mt-1">
+                      <select name="type" id="type" placeholder="class">
+                        <option value="">Alle</option>
+                      </select>
+                  </div>
+              </div>
+              <div>
+                  <label class="block font-medium text-gray-700">
+                      Fabrikant
+                  </label>
+                  <div class="mt-1">
+                      <select name="make" id="make" placeholder="class">
+                          <option value="" selected="selected">Alle</option>
+                      </select>
+                  </div>
+              </div>
+  
+              <div class="make-wrapper">
+                  <label class="block font-medium text-gray-700">
+                      Model
+                  </label>
+                  <select name="model" id="model">
+                      <option value="" selected="selected">Alle</option>
+                  </select>
+              </div>
+  
+              <div>
+                  <label class="block font-medium text-gray-700">
+                      Brændstof
+                  </label>
+                  <div class="mt-1">
+                      <select name="propellant" id="propellant" placeholder="class">
+                          <option value="" selected="selected">Alle</option>
+                      </select>
+                  </div>
+              </div>
+              <div>
+                  <label class="block font-medium text-gray-700">
+                      Kilometer
+                  </label>
+                  <div class="mt-1 space-y-1">
+                      <select name="kmfrom" id="bbm_selectedMileageMin" placeholder="class">
+                          <option>Fra</option>
+                      </select>
+                      <select name="kmto" id="bbm_selectedMileageMax" placeholder="class">
+                          <option value="" selected="selected">Til</option>
+                      </select>
+                  </div>
+              </div>
+              <div>
+                  <label class="block font-medium text-gray-700">
+                      Modelår
+                  </label>
+                  <div class="mt-1 space-y-1">
+                      <select name="yearfrom" id="bbm_selectedModelYearFrom" placeholder="class">
+                          <option value="" selected="selected">Fra</option>
+                      </select>
+                      <select name="yearto" id="bbm_selectedModelYearTo" placeholder="class">
+                          <option value="" selected="selected">Til</option>
+                      </select>
+                  </div>
+              </div>
+              <div>
+                  <label class="block font-medium text-gray-700">
+                      Pris
+                  </label>
+                  <div class="mt-1 space-y-1">
+                      <select name="pricemin" id="bbm_selectedMinPrice" placeholder="class">
+                          <option value="" selected="selected">Fra</option>
+                      </select>
+                      <select name="pricemax" id="bbm_selectedMaxPrice" placeholder="class">
+                          <option value="" selected="selected">Til</option>
+                      </select>
+                  </div>
+              </div>
+  
+              <div class="flex items-center">
+                  <!-- <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="annual-billing-label" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                  </button>
+                  <span class="ml-3" id="annual-billing-label">
+                      <span class= font-medium text-gray-900">Vis kun leasing biler</span>
+                  </span> -->
+              </div>
+  
+          </div>
+          <div class="p-4 border-t">
+              <a id="hide-filters" class="inline-flex items-center justify-between px-4 py-2 text-[12px] border-[1px] text-left rounded-md space-x-2 cursor-pointer hover:bg-yellow-400">
+                  <span>Luk filteret</span><i>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                  </i>
+              </a>
+  
+              <a class="hidden cursor-pointer button">
+                  <span>Viser 107 biler</span><i>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                  </i>
+              </a>
+  
+          </div>
+  
+  
+  
+  
+  
+      </div>
       </section>
-      <section id="car-filters">
-        <div class="model"></div>
-        <div class="make"></div>
-        <div class="propellant"></div>
-        <div class="type"></div>
-      </section>
+  
       <section id="cars" class="grid grid-cols-4 gap-4"></section>
+      <section id="car-details" class="hidden"><div class="fucking-car">Her er en fucking bil snart</div>
+        <div class="lg:flex lg:space-x-8">
+            <div class="lg:w-7/12">
+
+                <div>
+                    <div class="relative group">
+                        <div class="absolute cursor-pointer enlargeBtn top-4 right-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
+                        </div>
+
+                        <!--<video id="video" preload="auto" loop="loop" controls="controls" playsinline="" class="w-full border rounded-md ng-hide" style="width: 100%; height: auto;" autoplay="">
+                            <source type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>-->
+
+                        <img class="w-full border rounded-md" loading="lazy" alt="" src="https://billeder.bilinfo.net/bilinfo/29cdfec0-3c1d-49cb-bb8d-3692191011ba.jpeg?class=S1600X1600">
+
+                    </div>
+                    <div class="flex py-2">
+                        <a class="flex items-center justify-center w-8 rounded-md cursor-pointer bg-primary text-light hover:bg-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </a>
+                        <div class="flex w-full px-2 space-x-2 overflow-hidden">
+                            <div class="flex space-x-2">
+
+                               <div class="flex w-32 h-16 overflow-x-hidden border rounded-md cursor-pointer hover:border-primary ng-scope border-primary">
+                                    <img class="object-cover w-full h-full" loading="lazy" src="https://billeder.bilinfo.net/bilinfo/29cdfec0-3c1d-49cb-bb8d-3692191011ba.jpeg?class=S1600X1600">
+                                    <div class="flex items-center justify-center w-full h-full ng-hide" loading="lazy">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
+
+                                        <div class="text-sm">Se video</div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <a class="flex items-center justify-center w-8 rounded-md cursor-pointer bg-primary text-light hover:bg-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col py-4 space-y-4">
+                    <div class="lg:hidden">
+                        <div class="flex flex-wrap justify-between gap-2 py-4 lg:py-0 lg:pb-4">
+                            <div class="flex">
+                                <p class="mr-2 label leasing-badge">Leasing</p>
+                                <p class="mr-2 label news-badge" style="color: #fff">Nyhed</p>
+                                <p class="mr-2 label popular-badge">Populær</p>
+                                <p class="mr-2 label ng-hide sold-badge" style="color: #000">Solgt</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="https://www.facebook.com/share.php?u=https%3A//www.brugtbilsmodulet.dk/bbmview/shareonfacebook%3Fqnumber%3D1244.917340730" bbmclickevent="Del på Facebook" ng-modelid="1244" class="grey-button">
+                                    <span>Del på Facebook</span>
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                        </svg>
+                                    </i>
+                                </a>
+                                <a href="https://www.brugtbilsmodulet.dk/pdf?qnumber=1244.917340730" bbmclickevent="Udskriv" ng-modelid="1244" class="grey-button">
+                                    <span>Udskriv</span>
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                        </svg>
+                                    </i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between py-3 space-x-4">
+                            <div class="space-y-1">
+                                <h2 class="text-2xl font-bold leading-none text-gray-900 md:text-2xl lg:text-3xl line-clamp-1 ng-binding">
+                                    Audi e-tron GT
+                                </h2>
+                                <h3 class="text-base leading-none text-gray-400 line-clamp-1 ng-binding">
+                                    quattro 
+                                </h3>
+                            </div>
+                            <div class="carbrand">
+                                <img ng-src="https://www.brugtbilsmodulet.dk/Images/carlogos/Audi.svg" on-error-src="" car-id="917340730" ng-show="currentCar.makeLogoNotFound == undefined" alt="" src="https://www.brugtbilsmodulet.dk/Images/carlogos/Audi.svg">
+                                <div class="ng-binding ng-hide" ng-show="currentCar.makeLogoNotFound == true">Audi</div>
+                            </div>
+                        </div>
+
+                        <div class="custom-specgrid">
+
+
+                            <!-- ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block">
+                                <p class="ng-binding">1.reg.</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' --><p ng-if="prop.Format == 'Dato'" class="ng-binding ng-scope">13-12-2021 </p><!-- end ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Type</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="Personvogn " class="ng-binding ng-scope">Personvogn</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Km.</p>
+                                <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="43,000 " class="ng-binding ng-scope">43,000 </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Farve</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="Koksmetal " class="ng-binding ng-scope">Koksmetal</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Brændstof</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="El " class="ng-binding ng-scope">El</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Motor</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' --><p ng-if="prop.Format == 'Decimal'" class="ng-binding ng-scope"> l</p><!-- end ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Modelår</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="2022 " class="ng-binding ng-scope">2022</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                                <p class="ng-binding">Km. pr. liter</p>
+                                <!-- ngIf: prop.Format == 'Tal' -->
+                                <!-- ngIf: prop.Format == 'Tekst' -->
+                                <!-- ngIf: prop.Format == 'Dato' -->
+                                <!-- ngIf: prop.Format == 'Decimal' --><p ng-if="prop.Format == 'Decimal'" class="ng-binding ng-scope">54,4 </p><!-- end ngIf: prop.Format == 'Decimal' -->
+                            </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem -->
+                        </div>
+
+                        <div class="flex justify-between py-3">
+                            <!-- ngIf: currentCar.DeletedDate == null --><div ng-if="currentCar.DeletedDate == null" class="ng-scope">
+                                <p ng-show="!getLeasingMode()" class="text-4xl carCard_price ng-binding"><span class="mr-2 text-lg font-normal uppercase align-top">DKK</span>5.479,-</p>
+                    
+                                <p ng-show="!getLeasingMode()" class="text-base carCard_vat ng-binding">leasing pr. md. ekskl. moms</p>
+                                <p ng-show="getLeasingMode()" class="text-base carCard_vat ng-binding ng-hide"></p>
+                            </div><!-- end ngIf: currentCar.DeletedDate == null -->
+
+
+                            <!-- ngIf: currentCar.DeletedDate != null -->
+                        </div>
+
+                        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                            <a class="w-full cursor-pointer button" ng-click="showInterestClick()" bbmclickevent="Skriv på bilen" ng-modelid="1244">
+                                <span>Skriv på bil</span>
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </i>
+                            </a>
+                            <a class="w-full button button--secondary" href="tel:75443800" bbmclickevent="Ring på bil" ng-modelid="1244">
+                                <span>Ring på bil</span>
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </i>
+                            </a>
+                        </div>
+
+                        <!-- ngIf: currentCar.DealerName.length > 0 --><div class="p-4 mt-4 text-sm text-gray-700 rounded-lg bg-gray-50 ng-scope" ng-if="currentCar.DealerName.length > 0">
+                            <p class="text-sm text-gray-400">Bilen står hos:</p>
+                            <p class="text-sm ng-binding">Lars Hein Automobiler A/S</p>
+                            <p class="text-sm ng-binding">Industrivej 48 B, 6760 Ribe</p>
+                            <div class="flex mt-2 space-x-2">
+                                <!-- ngIf: currentCar.DealerPhoneNumber.length > 0 --><a ng-if="currentCar.DealerPhoneNumber.length > 0" class="underline text-primary hover:text-secondary ng-binding ng-scope" href="tel:75443800">75443800</a><!-- end ngIf: currentCar.DealerPhoneNumber.length > 0 -->
+                                <!-- ngIf: currentCar.DealerEmail.length > 0 --><span ng-if="currentCar.DealerEmail.length > 0" class="ng-scope">|</span><!-- end ngIf: currentCar.DealerEmail.length > 0 -->
+                                <!-- ngIf: currentCar.DealerEmail.length > 0 --><a ng-if="currentCar.DealerEmail.length > 0" class="underline text-primary hover:text-secondary ng-scope" href="mailto:salg@lars-hein.dk">Send Email</a><!-- end ngIf: currentCar.DealerEmail.length > 0 -->
+                            </div>
+                        </div><!-- end ngIf: currentCar.DealerName.length > 0 -->
+
+
+
+                        <!-- ngInclude: 'santander' --><div ng-include="'santander'" class="ng-scope">
+
+    <div class="ng-scope">
+
+        <!-- Own Santander Id -->
+        <!-- ngIf: settings.santanderPartnerId != '' --><div class="p-4 my-4 space-y-4 bg-gray-100 rounded-lg ng-scope" ng-if="settings.santanderPartnerId != ''">
+            <img class="w-full rounded-md" ng-src="https://www.brugtbilsmodulet.dk/Images/santander2.svg" alt="" src="https://www.brugtbilsmodulet.dk/Images/santander2.svg">
+            <a class="cursor-pointer button button--tertiary" ng-click="showSantanderClick()" bbmclickevent="Se finansieringsmuligheder (Santander)" ng-modelid="1244">
+                <span>Se finansiering</span><i>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </i>
+            </a>
+            <p class="text-gray-400">
+                Finansiering på lån uden pant via Santander Consumer Bank. Etabl.omk. samt mdl. kontogebyr er medtaget i alle beregninger. Fortrydelsesret 14 dage.
+            </p>
+        </div><!-- end ngIf: settings.santanderPartnerId != '' -->
+
+        <!-- BilInfo Finans -->
+        <!-- ngIf: !settings.hideFinance && finance != null -->
+
+    </div>
+  </div>
+
+                    </div>
+
+                    <div class="py-2">
+                        <h2 class="text-lg font-bold text-gray-900">Beskrivelse</h2>
+                        <p class="text-base text-gray-500 line-clamp-4 ng-binding" ng-class="{ 'line-clamp-4' : currentCar.CommentExpanded == null || currentCar.CommentExpanded == false }" ng-bind-html="formatHtml(currentCar.Comment)">Virkeligt fed og veludstyret sportsvogn med plads til fire personer! Billig vægtafgift og elektrisk rækkevidde på op til 454 km. jf. WLTP!<br><br>Highlights:<br>* Luftundervogn<br>* Panoramaglastag<br>* Pro S-sportssæder m. krydssyninger<br>* ACC - adaptiv fartpilot<br>* Matrix LED-lygter m. laserlys<br>* Ventilation og massage i forsæder<br>* Bang &amp; Olufsen soundsystem<br>* Originale 21" alufælge<br>* Stålbremser m. wolframcarbid<br>* Alcantara loftshimmel<br>* Firehjulsstyring<br>* Sort optikpakke<br>* 360° kamera<br>* El indst. forsæder<br>* Komfortnøgle (nøglefri betjening)<br>* Dynamikpakke Plus<br>* Sædevarme i for- og bagsæder<br>* Varmepumpe<br><br>LEASING FORSLAG:<br>Udbetaling: 100.000 kr. (125.000 inkl. moms),<br>12 måneder á 5.479 kr. (6.849 inkl. moms),<br>Restværdi: 380.000 kr. ex moms og afgift,<br>Kilometer: Fri<br><br>Tilbud inkl. nummerplader og kontraktoprettelse. Ingen skjulte omkostninger. Ydelserne kan justeres efter ønske, så de tilpasses dit kørselsbehov. Der tages forbehold for renteændringer. <br><br>Vi anbefaler en 12-måneders leasingkontrakt ad gangen, da det giver maksimal fleksibilitet og sikrer dig en lavere ydelse hvert år i takt med, at registreringsafgiften falder. Kontrakten kan forlænges lige så længe du har lyst til. På denne bil tilbyder vi også sæsonleasing og splitleasing..<br><br>Alle vores biler bliver kosmetisk klargjort og mekanisk gennemgået. Efter endt leasingkontrakt tager vi gerne din bil i bytte eller hjælper med videreformidling samt med at finde din næste bil. Vi tilbyder også attraktive priser på forsikring, servicekontrakter og CarGarantie.<br><br>Fortsat udstyrsliste:<br>Bagakseldifferentiale m. tværspærre, ambientebelysning (multicolor), daytonagrå perleffekt lakering, varme i rat, 3 zone klima, nightvision / natsynsassistent, el betjent bagklap, blindvinkelsassistent, vognbaneassistent, automatisk parkerings system, LED-baglygter m. dynamisk blinklys, navigationssystem high, assistenspakke plus, skiltegenkendelse, DAB-radio, digitalt cockpit, dynamisk styring, læder sportsrat m. multifunktion, el-klapbare sidespejle m. varme, fjernlysassistent, garageportsåbner, Audi phone box, sorte sidespejle, akustikglas i sideruder, trafikkrydsassistent, dynamisk styring, adaptiv undervogn, auto. nedbl. bakspejl, musikstreaming via bluetooth, emergency assist, kø assistent, alarm, connect pakke, pre sense city, sideairbags bagi, frakobling af passagerairbag, aut.gear, elektrisk parkeringsbremse, kurvelys, automatisk lys, bakkamera, regnsensor, udv. temp. måler, 4x el-ruder, isofix, armlæn, kopholder, ikke ryger, lev. nysynet,<br><br>Importbil - udstyr kan variere fra dansk model,<br><br>Attraktiv finansiering tilbydes. Kontakt Lars Hein Automobiler for et uforpligtende tilbud. Vi tager gerne din nuværende bil i bytte. <br></p>
+                        <a class="text-base font-bold cursor-pointer text-primary ng-binding" ng-click="currentCar.CommentExpanded = !currentCar.CommentExpanded">Læs mere</a>
+                    </div>
+
+                    <div class="collapsible" ng-class="{ 'open' : section_specs_visible }">
+                        <div class="cursor-pointer collapsible_header" ng-click="section_specs_visible = !section_specs_visible" bbmclickevent="Specifikationer (Folde ud)" ng-modelid="1244">
+                            <div class="flex space-x-4 place-items-center">
+                                <div class="iconBox">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+
+                                </div>
+                                <h3 class="text-xl font-bold">
+                                    Specifikationer
+                                </h3>
+                            </div>
+                            <svg class="w-6 h-6 collapsible_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+
+
+
+                        <!-- ngRepeat: kat in propertyListings --><div class="collapsible_small ng-scope ng-hide" ng-class="{ 'open' : kat.visible }" ng-repeat="kat in propertyListings" ng-show="section_specs_visible">
+                            <div class="cursor-pointer collapsible_small_header" ng-click="kat.visible = !kat.visible" bbmclickevent="Specifikationer -> Generelt (Folde ud)" ng-modelid="1244">
+                                <p class="ng-binding">Generelt</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </div>
+                            <div class="grid gap-2 py-4 md:grid-cols-4 ng-hide" ng-show="kat.visible">
+                                <!-- ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">1.reg.</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' --><p ng-if="prop.Format == 'Dato'" class="ng-binding ng-scope">13-12-2021 </p><!-- end ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Type</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="Personvogn " class="ng-binding ng-scope">Personvogn</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Farve</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="Koksmetal " class="ng-binding ng-scope">Koksmetal</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Modelår</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="2022 " class="ng-binding ng-scope">2022</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Antal døre</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="4 " class="ng-binding ng-scope">4 </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope ng-hide" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Produktionsår</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title=" " class="ng-binding ng-scope"></p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items -->
+
+                            </div>
+                        </div><!-- end ngRepeat: kat in propertyListings --><div class="collapsible_small ng-scope ng-hide" ng-class="{ 'open' : kat.visible }" ng-repeat="kat in propertyListings" ng-show="section_specs_visible">
+                            <div class="cursor-pointer collapsible_small_header" ng-click="kat.visible = !kat.visible" bbmclickevent="Specifikationer -> Motor (Folde ud)" ng-modelid="1244">
+                                <p class="ng-binding">Motor</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </div>
+                            <div class="grid gap-2 py-4 md:grid-cols-4 ng-hide" ng-show="kat.visible">
+                                <!-- ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Km.</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="43,000 " class="ng-binding ng-scope">43,000 </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Brændstof</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="El " class="ng-binding ng-scope">El</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Motor</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' --><p ng-if="prop.Format == 'Decimal'" class="ng-binding ng-scope"> l</p><!-- end ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope ng-hide" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Cylindere</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title=" " class="ng-binding ng-scope"> </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope ng-hide" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Ventiler</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title=" " class="ng-binding ng-scope"> </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">HK</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="476 " class="ng-binding ng-scope">476 </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope ng-hide" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Volume</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title=" " class="ng-binding ng-scope"> </p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Transmission</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="4 " class="ng-binding ng-scope">4</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Gear type</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="A " class="ng-binding ng-scope">Automatgear</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items -->
+
+                            </div>
+                        </div><!-- end ngRepeat: kat in propertyListings --><div class="collapsible_small ng-scope ng-hide" ng-class="{ 'open' : kat.visible }" ng-repeat="kat in propertyListings" ng-show="section_specs_visible">
+                            <div class="cursor-pointer collapsible_small_header" ng-click="kat.visible = !kat.visible" bbmclickevent="Specifikationer -> Ydelse (Folde ud)" ng-modelid="1244">
+                                <p class="ng-binding">Ydelse</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </div>
+                            <div class="grid gap-2 py-4 md:grid-cols-4 ng-hide" ng-show="kat.visible">
+                                <!-- ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Km. pr. liter</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' --><p ng-if="prop.Format == 'Decimal'" class="ng-binding ng-scope">54,4 </p><!-- end ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Topfart</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="245 km/t." class="ng-binding ng-scope">245 km/t.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Moment</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="630 nm" class="ng-binding ng-scope">630 nm</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">0-100 km/t.</p>
+                                    <!-- ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="4,1 sek." class="ng-binding ng-scope">4,1 sek.</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items -->
+
+                            </div>
+                        </div><!-- end ngRepeat: kat in propertyListings --><div class="collapsible_small ng-scope ng-hide" ng-class="{ 'open' : kat.visible }" ng-repeat="kat in propertyListings" ng-show="section_specs_visible">
+                            <div class="cursor-pointer collapsible_small_header" ng-click="kat.visible = !kat.visible" bbmclickevent="Specifikationer -> Egenskaber (Folde ud)" ng-modelid="1244">
+                                <p class="ng-binding">Egenskaber</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </div>
+                            <div class="grid gap-2 py-4 md:grid-cols-4 ng-hide" ng-show="kat.visible">
+                                <!-- ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Længde</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="499 cm." class="ng-binding ng-scope">499 cm.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Bredde</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="196 cm." class="ng-binding ng-scope">196 cm.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Højde</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="141 cm." class="ng-binding ng-scope">141 cm.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Totalvægt</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="2,840 kg." class="ng-binding ng-scope">2,840 kg.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope ng-hide" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Tank</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title=" l." class="ng-binding ng-scope"> l.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope ng-hide" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Træk</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title=" kg." class="ng-binding ng-scope"> kg.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Vægt</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="2,350 kg." class="ng-binding ng-scope">2,350 kg.</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items -->
+
+                            </div>
+                        </div><!-- end ngRepeat: kat in propertyListings --><div class="collapsible_small ng-scope ng-hide" ng-class="{ 'open' : kat.visible }" ng-repeat="kat in propertyListings" ng-show="section_specs_visible">
+                            <div class="cursor-pointer collapsible_small_header" ng-click="kat.visible = !kat.visible" bbmclickevent="Specifikationer -> Økonomi (Folde ud)" ng-modelid="1244">
+                                <p class="ng-binding">Økonomi</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </div>
+                            <div class="grid gap-2 py-4 md:grid-cols-4 ng-hide" ng-show="kat.visible">
+                                <!-- ngRepeat: prop in kat.items --><div class="spec-block ng-scope" ng-repeat="prop in kat.items" ng-show="currentCar[prop.JsonName] != null">
+                                    <p class="ng-binding">Grøn ejerafgift</p>
+                                    <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="780 Kr. / årligt" class="ng-binding ng-scope">780 Kr. / årligt</p><!-- end ngIf: prop.Format == 'Tal' -->
+                                    <!-- ngIf: prop.Format == 'Tekst' -->
+                                    <!-- ngIf: prop.Format == 'Dato' -->
+                                    <!-- ngIf: prop.Format == 'Decimal' -->
+
+                                </div><!-- end ngRepeat: prop in kat.items -->
+
+                            </div>
+                        </div><!-- end ngRepeat: kat in propertyListings -->
+
+
+                    </div>
+
+                    <div class="collapsible" ng-class="{ 'open' : section_equipment_visible }">
+                        <div class="cursor-pointer collapsible_header" ng-click="section_equipment_visible = !section_equipment_visible" bbmclickevent="Udstyr (Folde ud)" ng-modelid="1244">
+                            <div class="flex space-x-4 place-items-center">
+                                <div class="iconBox">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold">
+                                    Udstyr
+                                </h3>
+                            </div>
+                            <svg class="w-6 h-6 collapsible_icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                        <div class="grid gap-4 py-4 md:grid-cols-3 ng-hide" ng-show="section_equipment_visible">
+                            <!-- ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">360 camera</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">ABS bremser</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Adaptiv fartpilot</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Adaptiv suspension </p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Alarm</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Aluminiumsfælge</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">AntiSpin</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Armlæn</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Autodæmpning bagud</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Automatgear</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Automatisk fjernlys</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Automatisk lys</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Automatisk parkeringssystem</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Bakkamera</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Blind vinkel detektion</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Bluetooth</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Bluetooth-lydstreaming</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Curve Light</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">DAB Radio</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Digital cockpit</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Elektrisk bagagerum</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Elektrisk foldbar side spejle opvarmet</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Elektrisk parkeringsbremse</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Elektriske forsæder</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Elvinduer4</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Fartpilot</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Fjernbetjent centrallås</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">FullLED-forlygter</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Glastag</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">InfoCenter</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Isofix</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">KeylessGo</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Læder sæder</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">LED kørelys</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Nattesyn</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Navigation</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Opvarmet rat</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Parkeringssensor bag</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Parkeringssensor foran</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Sædevarme</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Servo</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Soltag</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Sportssæder</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Startspærre</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Trafiklys genkendelse</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Trip computer</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList --><div class="equipItem ng-scope" ng-repeat="equip in currentCar.EquipmentList">
+                                <p class="ng-binding">Vejbaneassistent</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div><!-- end ngRepeat: equip in currentCar.EquipmentList -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="lg:w-5/12">
+
+                <div class="sticky hidden top-8 lg:block">
+                    <div class="flex flex-wrap justify-between gap-2 py-4 lg:py-0 lg:pb-4">
+                        <div class="flex">
+                            <p class="mr-2 label leasing-badge" ng-show="currentCar.DeletedDate == null &amp;&amp; currentCar.LeasingPrice != null" ng-class="{ 'leasing-badge' : leasingColorIsDefined }">Leasing</p>
+                            <p class="mr-2 label news-badge" style="color: #fff" ng-show="currentCar.DeletedDate == null &amp;&amp; isNyhed(currentCar)" ng-class="{ 'news-badge' : newsColorIsDefined, 'label--highlight' : !newsColorIsDefined }">Nyhed</p>
+                            <p class="mr-2 label popular-badge" ng-show="currentCar.DeletedDate == null &amp;&amp; isPopular(currentCar)" ng-class="{ 'popular-badge' : popularColorIsDefined }">Populær</p>
+                            <p class="mr-2 label ng-hide sold-badge" style="color: #000" ng-show="currentCar.DeletedDate != null" ng-class="{ 'sold-badge' : soldColorIsDefined }">Solgt</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="https://www.facebook.com/share.php?u=https%3A//www.brugtbilsmodulet.dk/bbmview/shareonfacebook%3Fqnumber%3D1244.917340730" bbmclickevent="Del på Facebook" ng-modelid="1244" class="grey-button">
+                                <span>Del på Facebook</span>
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                    </svg>
+                                </i>
+                            </a>
+                            <a href="https://www.brugtbilsmodulet.dk/pdf?qnumber=1244.917340730" bbmclickevent="Udskriv" ng-modelid="1244" class="grey-button">
+                                <span>Udskriv</span>
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                    </svg>
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between py-3 space-x-4">
+                        <div class="space-y-1">
+                            <h2 class="text-2xl font-bold leading-none text-gray-900 md:text-2xl lg:text-3xl ng-binding">
+                                Audi e-tron GT
+                            </h2>
+                            <h3 class="text-base leading-none text-gray-400 ng-binding">
+                                quattro 
+                            </h3>
+                        </div>
+                        <div class="carbrand" ng-class="{'not-visible': car.makeLogoNotFound == true || settings.hideBrandLogos == true }">
+                            <img ng-src="https://www.brugtbilsmodulet.dk/Images/carlogos/Audi.svg" on-error-src="" car-id="917340730" ng-show="currentCar.makeLogoNotFound == undefined" alt="" src="https://www.brugtbilsmodulet.dk/Images/carlogos/Audi.svg">
+                            <div class="ng-binding ng-hide" ng-show="currentCar.makeLogoNotFound == true">Audi</div>
+                        </div>
+                    </div>
+
+                    <div class="custom-specgrid">
+                        <!-- ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">1.reg.</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' --><p ng-if="prop.Format == 'Dato'" class="ng-binding ng-scope">13-12-2021 </p><!-- end ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Type</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="Personvogn " class="ng-binding ng-scope">Personvogn</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Km.</p>
+                            <!-- ngIf: prop.Format == 'Tal' --><p ng-if="prop.Format == 'Tal'" title="43,000 " class="ng-binding ng-scope">43,000 </p><!-- end ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Farve</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="Koksmetal " class="ng-binding ng-scope">Koksmetal</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Brændstof</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="El " class="ng-binding ng-scope">El</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Motor</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' --><p ng-if="prop.Format == 'Decimal'" class="ng-binding ng-scope"> l</p><!-- end ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Modelår</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' --><p ng-if="prop.Format == 'Tekst'" title="2022 " class="ng-binding ng-scope">2022</p><!-- end ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem --><div class="spec-block ng-scope" ng-repeat="prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem" ng-show="currentCar[prop.JsonName] != null">
+                            <p class="ng-binding">Km. pr. liter</p>
+                            <!-- ngIf: prop.Format == 'Tal' -->
+                            <!-- ngIf: prop.Format == 'Tekst' -->
+                            <!-- ngIf: prop.Format == 'Dato' -->
+                            <!-- ngIf: prop.Format == 'Decimal' --><p ng-if="prop.Format == 'Decimal'" class="ng-binding ng-scope">54,4 </p><!-- end ngIf: prop.Format == 'Decimal' -->
+                        </div><!-- end ngRepeat: prop in settings.propertyListing|limitTo:settings.propertiesOnDetailItem -->
+                    </div>
+
+                    <div class="flex justify-between py-3">
+                        <!-- ngIf: currentCar.DeletedDate == null --><div ng-if="currentCar.DeletedDate == null" class="ng-scope">
+                            <p ng-show="!getLeasingMode()" class="text-4xl carCard_price ng-binding"><span class="mr-2 text-lg font-normal uppercase align-top">DKK</span>5.479,-</p>
+                      
+                            <p ng-show="!getLeasingMode()" class="text-base carCard_vat ng-binding">leasing pr. md. ekskl. moms</p>
+                            <p ng-show="getLeasingMode()" class="text-base carCard_vat ng-binding ng-hide"></p>
+                        </div><!-- end ngIf: currentCar.DeletedDate == null -->
+
+
+                        <!-- ngIf: currentCar.DeletedDate != null -->
+                    </div>
+
+                    <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                        <a class="w-full cursor-pointer button" ng-click="showInterestClick()" bbmclickevent="Skriv på bilen" ng-modelid="1244">
+                            <span>Skriv på bil</span>
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </i>
+                        </a>
+                        <a class="w-full button button--secondary" href="tel:75443800" bbmclickevent="Ring på bil" ng-modelid="1244">
+                            <span>Ring på bil</span>
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </i>
+                        </a>
+                    </div>
+
+                    <!-- ngIf: currentCar.DealerName.length > 0 --><div class="p-4 mt-8 text-sm text-gray-700 rounded-lg bg-gray-50 ng-scope" ng-if="currentCar.DealerName.length > 0">
+                        <p class="text-sm text-gray-400">Bilen står hos:</p>
+                        <p class="text-sm ng-binding">Lars Hein Automobiler A/S</p>
+                        <p class="text-sm ng-binding">Industrivej 48 B, 6760 Ribe</p>
+                        <div class="flex mt-2 space-x-2">
+                            <!-- ngIf: currentCar.DealerPhoneNumber.length > 0 --><a ng-if="currentCar.DealerPhoneNumber.length > 0" class="underline text-primary hover:text-secondary ng-binding ng-scope" href="tel:75443800">75443800</a><!-- end ngIf: currentCar.DealerPhoneNumber.length > 0 -->
+                            <!-- ngIf: currentCar.DealerEmail.length > 0 --><span ng-if="currentCar.DealerEmail.length > 0" class="ng-scope">|</span><!-- end ngIf: currentCar.DealerEmail.length > 0 -->
+                            <!-- ngIf: currentCar.DealerEmail.length > 0 --><a ng-if="currentCar.DealerEmail.length > 0" class="underline text-primary hover:text-secondary ng-scope" href="mailto:salg@lars-hein.dk">Send Email</a><!-- end ngIf: currentCar.DealerEmail.length > 0 -->
+                        </div>
+                    </div><!-- end ngIf: currentCar.DealerName.length > 0 -->
+
+
+                    <!-- ngInclude: 'santander' --><div ng-include="'santander'" class="ng-scope">
+
+    <div class="ng-scope">
+
+        <!-- Own Santander Id -->
+        <!-- ngIf: settings.santanderPartnerId != '' --><div class="p-4 my-4 space-y-4 bg-gray-100 rounded-lg ng-scope" ng-if="settings.santanderPartnerId != ''">
+            <img class="w-full rounded-md" ng-src="https://www.brugtbilsmodulet.dk/Images/santander2.svg" alt="" src="https://www.brugtbilsmodulet.dk/Images/santander2.svg">
+            <a class="cursor-pointer button button--tertiary" ng-click="showSantanderClick()" bbmclickevent="Se finansieringsmuligheder (Santander)" ng-modelid="1244">
+                <span>Se finansiering</span><i>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </i>
+            </a>
+            <p class="text-gray-400">
+                Finansiering på lån uden pant via Santander Consumer Bank. Etabl.omk. samt mdl. kontogebyr er medtaget i alle beregninger. Fortrydelsesret 14 dage.
+            </p>
+        </div><!-- end ngIf: settings.santanderPartnerId != '' -->
+
+        <!-- BilInfo Finans -->
+        <!-- ngIf: !settings.hideFinance && finance != null -->
+
+    </div>
+  </div>
+                </div>
+
+            </div>
+        </div></section>
+
+
+        <section id="car-filters" class="hidden">
+            <div class="model"></div>
+            <div class="make"></div>
+            <div class="propellant"></div>
+            <div class="type"></div>
+          </section>
     </main>
 
     <script src="bundle.js"></script>

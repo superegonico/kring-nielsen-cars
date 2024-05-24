@@ -157,7 +157,7 @@ export class Cars {
   set getMake(value) {
     let tempList = [];
 
-    if (carList.length > 0) {
+    if (carList && carList.length > 0) {
       carList.map((car) => {
         Object.keys(car)
           .filter((key) => key.includes("Make"))
@@ -197,7 +197,7 @@ export class Cars {
   set getModel(value) {
     let tempList = [];
 
-    if (carList.length > 0) {
+    if (carList && carList.length > 0) {
       carList.map((car) => {
         Object.keys(car)
           .filter((key) => key.includes("Model"))
@@ -237,7 +237,7 @@ export class Cars {
   set getType(value) {
     let tempList = [];
 
-    if (carList.length > 0) {
+    if (carList && carList.length > 0) {
       carList.map((car) => {
         Object.keys(car)
           .filter((key) => key === "Type")
@@ -277,7 +277,7 @@ export class Cars {
   set getPropellant(value) {
     let tempList = [];
 
-    if (carList.length > 0) {
+    if (carList && carList.length > 0) {
       carList.map((car) => {
         Object.keys(car)
           .filter((key) => key === "Propellant")
@@ -416,7 +416,13 @@ export class Cars {
   }
 
   resetFilters() {
-    carList = [];
+    carList = null;
+    carFilters = {
+      make: [],
+      model: [],
+      type: [],
+      propellant: [],
+    };
     this.carMake = [];
     this.carModel = [];
     this.carType = [];
@@ -442,6 +448,7 @@ export class Cars {
         new Car(document.getElementById(`car-${index}`), car);
       });
       carList = cars;
+      console.log(carList);
       return cars;
     });
   }

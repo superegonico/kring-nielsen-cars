@@ -1,3 +1,4 @@
+import cors from "cors";
 import { FiltersUI } from "./filtering";
 import { filterData, SearchType } from "filter-data";
 
@@ -25,6 +26,7 @@ export default class Car {
         propellant: car.Propellant,
         color: car.Color,
         price: car.Price,
+        gear: car.GearType,
       },
 
       makeModel: root.querySelector(".car__make-model"),
@@ -35,6 +37,7 @@ export default class Car {
       propellant: root.querySelector(".car__propellant"),
       color: root.querySelector(".car__color"),
       price: root.querySelector(".car__price"),
+      gear: root.querySelector(".car__gear"),
       carDetails: root.querySelector(".show-car-details"),
     };
 
@@ -49,6 +52,9 @@ export default class Car {
     this.el.mileage.innerHTML = `${this.el.car.mileage}`;
     this.el.propellant.innerHTML = `${this.el.car.propellant}`;
     this.el.color.innerHTML = `${this.el.car.color}`;
+    this.el.gear.innerHTML = `${
+      this.el.car.gear === "A" ? "Automatisk" : "Manuel"
+    }`;
     this.el.price.innerHTML = Number(this.el.car.price);
     this.el.carDetails.setAttribute("id", this.el.car.id);
   }
@@ -84,6 +90,10 @@ export default class Car {
        <ul class="border-[1px] rounded-md p-2">
             <li class="opacity-60 text-[12px]">Farve</li>
             <li class="car__color">SORTMETAL</li>
+        </ul>
+       <ul class="border-[1px] rounded-md p-2">
+            <li class="opacity-60 text-[12px]">Gear</li>
+            <li class="car__gear"></li>
         </ul>
     </div>
     <div class="pricing flex justify-between items-center">
@@ -127,7 +137,7 @@ export class CarDetails {
 
   insertCarData() {
     // console.log(this.root);
-    // console.log(this.el.car.make);
+    console.log(this.el.car.make);
   }
 
   static getHTML() {
@@ -397,6 +407,10 @@ export class Cars {
 
     carList = result;
 
+    document.querySelectorAll(".car-count").forEach((el) => {
+      el.innerHTML = result.length;
+    });
+
     // localStorage.setItem("filtered-car-list", JSON.stringify(result));
 
     return result;
@@ -455,9 +469,10 @@ export class Cars {
 
   getCarsFeed = async () => {
     const response = await fetch(
-      "https://gist.githubusercontent.com/nicolaisimonsen/23832234a19f65bb6ace54f51df1b33b/raw/779f7e78675b82e50734138b161cd3c954b0a0ce/cars.json"
+      "https://kring-nielsen.managed.supertest.dk/wp-json/getcars/all"
     );
+
     const cars = await response.json();
-    return cars.vehicles;
+    return cars.Vehicles;
   };
 }

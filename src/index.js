@@ -42,8 +42,13 @@ document.getElementById("show-filters").addEventListener("click", (e) => {
 document.getElementById("hide-filters").addEventListener("click", (e) => {
   document.getElementById("car-filters").classList.toggle("hide");
 });
-document.getElementById("cars").addEventListener("click", (e) => {
-  document.getElementById("car-filters").classList.add("hide");
+
+document.addEventListener("click", (e) => {
+  if (e.target.id !== "show-filters") {
+    if (!e.target.closest("#car-filters")) {
+      document.getElementById("car-filters").classList.add("hide");
+    }
+  }
 });
 
 document.getElementById("reset-filters").addEventListener("click", (e) => {

@@ -35,7 +35,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="absolute w-6 h-6 pointer-events-none top-2 left-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
             </svg>
-            <span>Viser 107 biler</span>
+            <p>Viser <span class="car-count">107</span> biler</p>
          </div>
          <div class="flex space-x-2">
           <select name="" id="" class="py-2 px-4 rounded-md border-[1px] h-[40px]">
@@ -43,12 +43,12 @@
             <option value="">Pris lav-høj</option>
             <option value="">Pris høj-lav</option>
           </select>
-          <button class="py-2 px-2 rounded-md border-[1px] h-[40px] hover:bg-yellow-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <!-- <button class="py-2 px-2 rounded-md border-[1px] h-[40px] hover:bg-yellow-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
           </svg></button>
           <button class="py-2 px-2 rounded-md border-[1px] h-[40px] hover:bg-yellow-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-          </svg></button>
+          </svg></button> -->
          </div>
         </div>
 
@@ -112,6 +112,16 @@
               </div>
               <div>
                   <label class="block font-medium text-gray-700">
+                      Gear
+                  </label>
+                  <div class="mt-1">
+                      <select name="geartype" id="geartype" placeholder="class">
+                          <option value="" selected="selected">Alle</option>
+                      </select>
+                  </div>
+              </div>
+              <div>
+                  <label class="block font-medium text-gray-700">
                       Kilometer
                   </label>
                   <div class="mt-1 space-y-1">
@@ -159,7 +169,15 @@
               </div>
   
           </div>
-          <div class="p-4 border-t">
+          <div class="flex items-center justify-between p-4 border-t">
+            <a class="text-sm cursor-pointer button">
+                <p>Viser <span class="car-count"></span> biler</p>
+                <!-- <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </i> -->
+            </a>
               <a id="hide-filters" class="inline-flex items-center justify-between px-4 py-2 text-[12px] border-[1px] text-left rounded-md space-x-2 cursor-pointer hover:bg-yellow-400">
                   <span>Luk filteret</span><i>
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,13 +186,7 @@
                   </i>
               </a>
   
-              <a class="hidden cursor-pointer button">
-                  <span>Viser 107 biler</span><i>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
-                      </svg>
-                  </i>
-              </a>
+   
   
           </div>
   
@@ -961,14 +973,14 @@
 
                 <div class="sticky hidden top-8 lg:block">
                     <div class="flex flex-wrap justify-between gap-2 py-4 lg:py-0 lg:pb-4">
-                        <div class="flex">
+                        <!-- <div class="flex">
                             <p class="mr-2 label leasing-badge" ng-show="currentCar.DeletedDate == null &amp;&amp; currentCar.LeasingPrice != null" ng-class="{ 'leasing-badge' : leasingColorIsDefined }">Leasing</p>
                             <p class="mr-2 label news-badge" style="color: #fff" ng-show="currentCar.DeletedDate == null &amp;&amp; isNyhed(currentCar)" ng-class="{ 'news-badge' : newsColorIsDefined, 'label--highlight' : !newsColorIsDefined }">Nyhed</p>
                             <p class="mr-2 label popular-badge" ng-show="currentCar.DeletedDate == null &amp;&amp; isPopular(currentCar)" ng-class="{ 'popular-badge' : popularColorIsDefined }">Populær</p>
                             <p class="mr-2 label ng-hide sold-badge" style="color: #000" ng-show="currentCar.DeletedDate != null" ng-class="{ 'sold-badge' : soldColorIsDefined }">Solgt</p>
-                        </div>
+                        </div> -->
                         <div class="flex space-x-2">
-                            <a href="https://www.facebook.com/share.php?u=https%3A//www.brugtbilsmodulet.dk/bbmview/shareonfacebook%3Fqnumber%3D1244.917340730" bbmclickevent="Del på Facebook" ng-modelid="1244" class="grey-button">
+                            <a href="https://www.facebook.com/share.php?u=https%3A//www.brugtbilsmodulet.dk/bbmview/shareonfacebook%3Fqnumber%3D1244.917340730" class="flex items-center grey-button">
                                 <span>Del på Facebook</span>
                                 <i>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

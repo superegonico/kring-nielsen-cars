@@ -22,6 +22,8 @@ export class Filter {
     return this.filter;
   }
   set filterSearch(value) {
+    console.log(value);
+
     this.filter = [
       { key: ["Make", "Model", "Variant"], value: value, type: SearchType.LK },
     ];

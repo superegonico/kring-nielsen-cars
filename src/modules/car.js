@@ -3,11 +3,14 @@ import { FiltersUI } from "./filtering";
 import { filterData, SearchType } from "filter-data";
 
 let carList = [];
+let filterList = [];
 let carFilters = {
   make: [],
   model: [],
   type: [],
   propellant: [],
+  mileage: [],
+  gear: [],
 };
 
 export default class Car {
@@ -23,6 +26,7 @@ export default class Car {
         image: car.Pictures[0],
         registration: car.RegistrationDate,
         mileage: car.Mileage,
+        // year: car.Year,
         propellant: car.Propellant,
         color: car.Color,
         price: car.Price,
@@ -34,6 +38,7 @@ export default class Car {
       image: root.querySelector(".car__image"),
       registration: root.querySelector(".car__reg"),
       mileage: root.querySelector(".car__milage"),
+      // year: root.querySelector(".car__year"),
       propellant: root.querySelector(".car__propellant"),
       color: root.querySelector(".car__color"),
       price: root.querySelector(".car__price"),
@@ -45,17 +50,33 @@ export default class Car {
   }
 
   insertCarData() {
+    const priceFormat = new Intl.NumberFormat("da-DK", {
+      style: "currency",
+      currency: "DKK",
+      maximumFractionDigits: 0,
+    });
+
+    const kmFormat = new Intl.NumberFormat("da-DK", {
+      style: "unit",
+      unit: "kilometer",
+    });
+
     this.el.makeModel.innerHTML = `${this.el.car.make} ${this.el.car.model}`;
     this.el.variant.innerHTML = `${this.el.car.variant}`;
     this.el.image.src = `${this.el.car.image}`;
     this.el.registration.innerHTML = `${this.el.car.registration}`;
-    this.el.mileage.innerHTML = `${this.el.car.mileage}`;
+    this.el.mileage.innerHTML = kmFormat
+      .format(Number(this.el.car.mileage))
+      .replace("km", "");
     this.el.propellant.innerHTML = `${this.el.car.propellant}`;
     this.el.color.innerHTML = `${this.el.car.color}`;
+    // this.el.year.innerHTML = `${this.el.car.year}`;
     this.el.gear.innerHTML = `${
       this.el.car.gear === "A" ? "Automatisk" : "Manuel"
     }`;
-    this.el.price.innerHTML = Number(this.el.car.price);
+    this.el.price.innerHTML = priceFormat
+      .format(Number(this.el.car.price))
+      .replace("kr.", "");
     this.el.carDetails.setAttribute("id", this.el.car.id);
   }
 
@@ -83,6 +104,7 @@ export default class Car {
             <li class="opacity-60 text-[12px]">KM</li>
             <li class="car__milage">90.0000</li>
         </ul>
+   
        <ul class="border-[1px] rounded-md p-2">
             <li class="opacity-60 text-[12px]">Brændstof</li>
             <li class="car__propellant">BENZIN</li>
@@ -137,7 +159,7 @@ export class CarDetails {
 
   insertCarData() {
     // console.log(this.root);
-    console.log(this.el.car.make);
+    // console.log(this.el.car.make);
   }
 
   static getHTML() {
@@ -156,6 +178,8 @@ export class Cars {
     this.carModel = [];
     this.carType = [];
     this.carPropellant = [];
+    this.carMileage = [];
+    this.carGearType = [];
 
     this.el.cars.innerHTML = "";
   }
@@ -167,8 +191,8 @@ export class Cars {
   set getMake(value) {
     let tempList = [];
 
-    if (carList && carList.length > 0) {
-      carList.map((car) => {
+    if (filterList && filterList.length > 0) {
+      filterList.map((car) => {
         Object.keys(car)
           .filter((key) => key.includes("Make"))
           .reduce((cur, key) => {
@@ -207,8 +231,8 @@ export class Cars {
   set getModel(value) {
     let tempList = [];
 
-    if (carList && carList.length > 0) {
-      carList.map((car) => {
+    if (filterList && filterList.length > 0) {
+      filterList.map((car) => {
         Object.keys(car)
           .filter((key) => key.includes("Model"))
           .reduce((cur, key) => {
@@ -247,8 +271,8 @@ export class Cars {
   set getType(value) {
     let tempList = [];
 
-    if (carList && carList.length > 0) {
-      carList.map((car) => {
+    if (filterList && filterList.length > 0) {
+      filterList.map((car) => {
         Object.keys(car)
           .filter((key) => key === "Type")
           .reduce((cur, key) => {
@@ -287,8 +311,8 @@ export class Cars {
   set getPropellant(value) {
     let tempList = [];
 
-    if (carList && carList.length > 0) {
-      carList.map((car) => {
+    if (filterList && filterList.length > 0) {
+      filterList.map((car) => {
         Object.keys(car)
           .filter((key) => key === "Propellant")
           .reduce((cur, key) => {
@@ -316,6 +340,85 @@ export class Cars {
           document.querySelector("#car-filters .propellant"),
           "propellant"
         ).populateFilter([...new Set(this.carPropellant)], "propellant");
+      });
+    }
+  }
+  get getMileage() {
+    return this.carMileage;
+  }
+
+  set getMileage(value) {
+    // let tempList = [];
+    // if (filterList && filterList.length > 0) {
+    //   filterList.map((car) => {
+    //     Object.keys(car)
+    //       .filter((key) => key === "Mileage")
+    //       .reduce((cur, key) => {
+    //         return tempList.push(car[key]);
+    //       }, {});
+    //   });
+    //   console.log(tempList);
+    //   const lowestNo = Math.min(...tempList);
+    //   const highestNo = Math.max(...tempList);
+    //   console.log(lowestNo, highestNo);
+    //   this.carMileage = tempList;
+    //   new FiltersUI(
+    //     document.querySelector("#car-filters .mileage"),
+    //     "mileage"
+    //   ).populateFilter([...new Set(this.carMileage)], "mileage");
+    // } else {
+    //   this.getCarsFeed().then((cars) => {
+    //     cars.map((car) => {
+    //       Object.keys(car)
+    //         .filter((key) => key === "Mileage")
+    //         .reduce((cur, key) => {
+    //           return this.carMileage.push(car[key]);
+    //         }, {});
+    //     });
+    //     new FiltersUI(
+    //       document.querySelector("#car-filters .mileage"),
+    //       "mileage"
+    //     ).populateFilter([...new Set(this.carMileage)], "mileage");
+    //   });
+    // }
+  }
+
+  get getGearType() {
+    return this.carGearType;
+  }
+
+  set getGearType(value) {
+    let tempList = [];
+
+    if (filterList && filterList.length > 0) {
+      filterList.map((car) => {
+        Object.keys(car)
+          .filter((key) => key === "GearType")
+          .reduce((cur, key) => {
+            return tempList.push(car[key]);
+          }, {});
+      });
+
+      this.carGearType = tempList;
+
+      new FiltersUI(
+        document.querySelector("#car-filters .geartype"),
+        "geartype"
+      ).populateFilter([...new Set(this.carGearType)], "geartype");
+    } else {
+      this.getCarsFeed().then((cars) => {
+        cars.map((car) => {
+          Object.keys(car)
+            .filter((key) => key === "GearType")
+            .reduce((cur, key) => {
+              return this.carGearType.push(car[key]);
+            }, {});
+        });
+
+        new FiltersUI(
+          document.querySelector("#car-filters .geartype"),
+          "geartype"
+        ).populateFilter([...new Set(this.carGearType)], "geartype");
       });
     }
   }
@@ -354,6 +457,9 @@ export class Cars {
         break;
       case "propellant":
         carFilters.propellant = lort;
+        break;
+      case "mileage":
+        carFilters.mileage = lort;
         break;
       default:
         break;
@@ -398,6 +504,10 @@ export class Cars {
   filterBy(filters) {
     const result = filterData(carList, filters);
 
+    result.sort((a, b) => {
+      return a.Price - b.Price;
+    });
+
     result.map((car, index) => {
       this.article(index);
     });
@@ -405,7 +515,7 @@ export class Cars {
       new Car(document.getElementById(`car-${index}`), car);
     });
 
-    carList = result;
+    filterList = result;
 
     document.querySelectorAll(".car-count").forEach((el) => {
       el.innerHTML = result.length;
@@ -416,21 +526,21 @@ export class Cars {
     return result;
   }
 
-  filterByMake(make) {
-    this.getCarsFeed().then((cars) => {
-      const filtedList = cars.filter((car) => car.Make === make);
+  // filterByMake(make) {
+  //   this.getCarsFeed().then((cars) => {
+  //     const filtedList = cars.filter((car) => car.Make === make);
 
-      filtedList.map((car, index) => {
-        this.article(index);
-      });
-      filtedList.map((car, index) => {
-        new Car(document.getElementById(`car-${index}`), car);
-      });
-    });
-  }
+  //     filtedList.map((car, index) => {
+  //       this.article(index);
+  //     });
+  //     filtedList.map((car, index) => {
+  //       new Car(document.getElementById(`car-${index}`), car);
+  //     });
+  //   });
+  // }
 
   resetFilters() {
-    carList = null;
+    filterList = carList;
     carFilters = {
       make: [],
       model: [],
@@ -455,6 +565,12 @@ export class Cars {
 
   getCars() {
     this.getCarsFeed().then((cars) => {
+      document.querySelector("section#cars").innerHTML = "";
+
+      cars.sort((a, b) => {
+        return a.Price - b.Price;
+      });
+
       cars.map((car, index) => {
         this.article(index);
       });
@@ -462,7 +578,11 @@ export class Cars {
         new Car(document.getElementById(`car-${index}`), car);
       });
       carList = cars;
-      console.log(carList);
+
+      document.querySelectorAll(".car-count").forEach((el) => {
+        el.innerHTML = cars.length;
+      });
+
       return cars;
     });
   }

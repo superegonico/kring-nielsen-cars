@@ -28,12 +28,35 @@ const getFiltering = (tis, lort) => {
   cars.getModel = true;
   cars.getType = true;
   cars.getPropellant = true;
+  cars.getGearType = true;
+  cars.getMileage = true;
 
   cars.selectedFilters(tis, lort);
 };
 
-document.getElementById("free-search").addEventListener("keypress", (e) => {
+document.getElementById("free-search").addEventListener("input", (e) => {
   filter.filterSearch = e.target.value;
+  if (e.target.value === "") {
+    document.getElementById("searchBtn").classList.remove("hidden");
+    document.getElementById("searchResetBtn").classList.add("hidden");
+  } else {
+    document.getElementById("searchBtn").classList.add("hidden");
+    document.getElementById("searchResetBtn").classList.remove("hidden");
+  }
+});
+
+document.getElementById("free-search").addEventListener("keyup", (e) => {
+  if (e.key === "Escape") {
+    filter.filterSearch = "";
+    e.target.value = "";
+  }
+});
+
+document.getElementById("searchResetBtn").addEventListener("click", (e) => {
+  filter.filterSearch = "";
+  document.getElementById("free-search").value = "";
+  document.getElementById("searchBtn").classList.remove("hidden");
+  document.getElementById("searchResetBtn").classList.add("hidden");
 });
 
 document.getElementById("show-filters").addEventListener("click", (e) => {
@@ -58,10 +81,32 @@ document.getElementById("reset-filters").addEventListener("click", (e) => {
 });
 
 document.getElementById("car-filters").addEventListener("change", (e) => {
+  let comp = null;
+
+  switch (e.target.getAttribute("data-search-comp")) {
+    case "LK":
+      comp = SearchType.LK;
+      break;
+    case "GTE":
+      comp = SearchType.GTE;
+      break;
+    case "LTE":
+      comp = SearchType.LTE;
+      break;
+    case "GT":
+      comp = SearchType.GT;
+      break;
+    case "LT":
+      comp = SearchType.LT;
+      break;
+    default:
+      comp = SearchType.LK;
+  }
+
   filter.filterObj = {
     key: e.target.id.charAt(0).toUpperCase() + e.target.id.slice(1),
     value: e.target.value,
-    type: SearchType.LK,
+    type: comp,
   };
 
   getFiltering(e.target.id, e.target.value);

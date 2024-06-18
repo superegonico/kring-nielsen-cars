@@ -1,3 +1,5 @@
+import daisyui from "daisyui";
+
 module.exports = {
   content: [
     "./dist/*.html",
@@ -16,5 +18,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [daisyui],
 };
